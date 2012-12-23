@@ -1,7 +1,8 @@
-f6413320c846bf00f63e011a472a23ac *DESCRIPTION
+ecda59236ba5a43b5c5ac51be3a772ea *ChangeLog
+767ebb4da3ca690ca63948c9cc006a96 *DESCRIPTION
 8b54e5a89fbda3af5e077053d40bec76 *NAMESPACE
 ce8ba753c17abbbcabcaa852e67ca61e *R/colormap.R
-927dedc9856a1767f9aa1e5cd9e6ecfe *R/modgam.R
+a658344b2119dcacd0cf49c019513874 *R/modgam.R
 219e307e645585d6e2e13619308050fc *R/optspan.R
 bf16da0e48c21ae9b0dcdf343fa4446f *R/predgrid.R
 e68c174c8592ee11f405ee497e079a22 *R/sampcont.R
@@ -11,7 +12,7 @@ def39993a51a47c7aea9f4f2c96fd794 *data/MAdata.rda
 673a40f5900da6c8f321c5c4d8da2da8 *data/beertweets.rda
 052a60bf263f1b3e7471c7c5d69c76ec *man/MAdata.Rd
 07a551793449eb07031256d68045aba3 *man/MAmap.Rd
-d1c0d555693b814408f6a935964ad9e7 *man/MapGAM-package.Rd
+c5927a697a06706f35aac918b1d43118 *man/MapGAM-package.Rd
 9d27e5afa13347fb70e211699207ff12 *man/beertweets.Rd
 9b50ee22d8ded48bfca143f5515e0e35 *man/colormap.Rd
 9c577c166ba4dfbc5b03eb621c31fa55 *man/modgam.Rd

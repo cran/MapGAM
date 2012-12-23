@@ -48,8 +48,8 @@ function (rdata, rgrid, permute=0, m="adjusted", sp=NULL, keep=F, verbose=T, ...
 		nobs = length(rdata[,1])
 		permresults=NULL 						# for permuted OR estimates
 		ptranks=rep(1, n)						# for pointwise ranks
-		devstat=rep(NA, permute)					# for global test
-		devstat[1]=data.frame(anova(model.0, model, test="Chi"))[2,4]	# deviance statistic for original data
+		devstat=rep(NA, permute)						# for global test
+		devstat[1]=anova(model.0, model)$Deviance[2]	# deviance statistic for original data
 		coords=rdata[,2:3]  			
 		m.data=rdata
 		for (i in 2:permute) {
@@ -57,8 +57,7 @@ function (rdata, rgrid, permute=0, m="adjusted", sp=NULL, keep=F, verbose=T, ...
 			m.data[,2:3]=coords[index,]				# randomly reassign individuals to the eligible residences
 			# For each permutation, we run the GAM (using a fixed span size)
 			m.gam=gam(fmla, family = binomial, data = m.data, ...)
-			devdata=data.frame(anova(model.0, m.gam, test="Chi"))
-			devstat[i]=devdata[2,5]						# deviance statistic for the model from the permuted data
+			devstat[i]=anova(model.0, m.gam)$Deviance[2]	# deviance statistic for the permuted data
 			tempresults=predict.gam(m.gam, rgrid)		# estimate log odds at each point from the permuted data
 			ptranks = ptranks + (origresults > tempresults) 
 			if (keep) permresults=cbind(permresults,tempresults)	# add log odds estimate vector to stored results		 

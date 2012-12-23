@@ -1,0 +1,8 @@
+2012-12-23  Scott Bartell <sbartell@uci.edu>
+
+	* DESCRIPTION (Version): New version is 0.6-1.
+
+	* R/modgam.R (modgam): corrected error in p-value calculation for 
+	global permutation test for significance of location.  Thanks to 
+	Lucheng Shao, UC Irvine, for noting strange simulation results.  
+

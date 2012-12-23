@@ -12,8 +12,8 @@ Contains functions for mapping risk surfaces using individual-level data such as
 \tabular{ll}{
 Package: \tab MapGAM\cr
 Type: \tab Package\cr
-Version: \tab 0.6\cr
-Date: \tab 2012-12-18\cr
+Version: \tab 0.6-1\cr
+Date: \tab 2012-12-23\cr
 License: \tab GPL-3\cr
 }
 Typical applications will start with the predgrid function to create a regular grid of points within the study area, with optional map boundaries (e.g., a country, state, or regional map).  Crude or adjusted odds ratios are then estimated at each grid point using the modgam function to smooth by geolocation.  Finally, the odds ratios (and optionally, "clusters"--areas of signficantly increased or decreased risk determined via permutation tests) are plotted using the colormap function.  The trimdata and sampcont functions can be used to restrict data to those within map boundaries and to conduct simple or spatiotemporal stratified sampling from eligible controls.  The optspan function can be used to find an optimal span size for the LOESS smoother used by the modgam function; it is automatically used within the modgam function when the span size is not provided by the user.}
