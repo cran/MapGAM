@@ -51,8 +51,8 @@ Send bug reports to \email{sbartell@uci.edu}.
 }
 
 \examples{
-# These examples require the maps package
-if (require(maps)) {
+# These examples require the "PBSmapping" and "maps" packages
+if (require(maps) & require(PBSmapping)) {
 data(beertweets)
 dim(beertweets)
 

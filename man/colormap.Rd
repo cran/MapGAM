@@ -55,18 +55,18 @@ Send bug reports to \email{sbartell@uci.edu}.
 ### Load readShapePoly base map and data 
 data(MAmap)		
 data(MAdata) 
-# create grid on base map
-MAgrid <- predgrid(MAdata, MAmap)		
+# Create a grid on the base map (PBSmapping package recommended)
+if(require(PBSmapping)) MAgrid <- predgrid(MAdata, MAmap) else MAgrid <- predgrid(MAdata)		
 # fit crude GAM model to the MA data using span size of 50\%
 fit1 <- modgam(MAdata, MAgrid, m="crude", sp=0.5)  
 # Plot a map showing crude odds ratios
 colormap(fit1, MAmap)					
 
 #### A detailed example including map projections and data trimming
-# NOTE: this example requires the maps package and mapproj package
+# NOTE: this example requires the maps, mapproj, and PBSmapping packages
 # Convert base map and beer tweet data locations to US Albers projection 
 # This results in better distance estimates than using (lat,long) as (X,Y) coords 
-if(require(maps) & require(mapproj)) {
+if(require(maps) & require(mapproj) & require(PBSmapping)) {
 	USmap <- map("state",projection="albers",parameters=c(29.5,45.5),
 				plot=FALSE,fill=TRUE,col="transparent")
 	data(beertweets)

@@ -1,6 +1,18 @@
+2013-03-11  Scott Bartell <sbartell@uci.edu>
+
+	* DESCRIPTION (Version): New version is 0.6-2
+
+	* DESCRIPTION (Depends/Suggests): PBSmapping changed from Depends
+	to Suggests, for compatibility with new PBSmapping license.
+
+	* man/trimdata.Rd, man/predgrid.Rd, man/MapGAM-package.Rd, 
+	man/colormap.Rd, man/sampcont.Rd: only test certain examples if 
+	PBSmapping is installed, and note when non-tested examples require
+ 	PBSmapping. 
+
 2012-12-23  Scott Bartell <sbartell@uci.edu>
 
-	* DESCRIPTION (Version): New version is 0.6-1.
+	* DESCRIPTION (Version): New version is 0.6-1
 
 	* R/modgam.R (modgam): corrected error in p-value calculation for 
 	global permutation test for significance of location.  Thanks to 

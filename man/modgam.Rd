@@ -91,7 +91,7 @@ Send bug reports to \email{sbartell@uci.edu}.
 data(MAmap)	
 # Load data and create grid on base map
 data(MAdata)							
-gamgrid <- predgrid(MAdata, MAmap)		
+gamgrid <- predgrid(MAdata, MAmap)    # requires PBSmapping package		
 # Fit crude GAM model to the MA data using span size of 50\%
 # and predict odds ratios for every point on gamgrid
 fit1 <- modgam(MAdata, gamgrid, m="crude", sp=0.5)  

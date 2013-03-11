@@ -51,15 +51,18 @@ gamgrid <- predgrid(MAdata)
 plot(gamgrid$Xcoord, gamgrid$Ycoord, cex=0.1, col="red")
 # and the data locations
 points(MAdata$Xcoord,MAdata$Ycoord)
-# note that grid extends beyond the state boundaries and into the ocean
-# better to further clip the grid to a map of MA using the following code
 
+# But that grid extends beyond the state boundaries and into the ocean!
+# Better to also clip the grid to a map of MA using the following code
+# which requires the PBSmapping package:
+if (require(PBSmapping)) {
 # Clip a 50x50 grid covering the MA data to a map of MA 
 data(MAmap)
 gamgrid2 <- predgrid(MAdata, map=MAmap, nrow=50, ncol=50)
 # plot the MA map and grid points
 plot(MAmap)
 points(gamgrid2$Xcoord, gamgrid2$Ycoord, cex=0.1, col="red")
+}
 }
 
 \keyword{misc}

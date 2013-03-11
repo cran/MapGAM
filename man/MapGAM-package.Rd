@@ -57,8 +57,9 @@ Young RL, Weinberg J, Vieira V, Ozonoff A, Webster TF. \href{http://www.ij-healt
 # Load synthetic data and a preformatted base map
 data(MAmap)		
 data(MAdata)
-# Create a grid on the base map	
-gamgrid <- predgrid(MAdata, MAmap)					
+# Create a grid on the base map (PBSmapping package recommended)	
+if(require(PBSmapping)) gamgrid <- predgrid(MAdata, MAmap) else
+	 gamgrid <- predgrid(MAdata) 		
 # Fit a GAM with a smooth term for spatial location
 fit1 <- modgam(MAdata, gamgrid, m="crude", sp=0.5)   
 \donttest{
