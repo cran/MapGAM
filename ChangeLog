@@ -1,3 +1,19 @@
+2013-12-12  Scott Bartell <sbartell@uci.edu>
+
+	* DESCRIPTION (Version): New version is 0.7-0
+
+	* R/modgam.R, R/optspan.R, R/colormap.R: MapGAM now includes an
+	unconditional permutation test, and allows the user to select 
+	any family and link function.  The package was previously limited 
+	to the (now default) binomial family with a logit link, but potential 
+	applications are broader such as investigation of joint effects of chemical 
+	mixtures (suggested by Tom Webster, Boston University).  The relevant 
+	help files are updated to reflect these changes, and new examples have 
+	been added to the modgam help file.   
+
+	* data/MAdata.rda: Added two new columns to the simulated data set, 
+	for use in a new chemical mixtures example.   
+
 2013-03-11  Scott Bartell <sbartell@uci.edu>
 
 	* DESCRIPTION (Version): New version is 0.6-2

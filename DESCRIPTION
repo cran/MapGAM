@@ -1,21 +1,15 @@
 Package: MapGAM
 Type: Package
-Title: Mapping Smoothed Odds Ratios from Individual-Level Data
-Version: 0.6-2
-Date: 2013-03-11
+Title: Mapping Smoothed Effect Estimates from Individual-Level Data
+Version: 0.7-0
+Date: 2013-12-12
 Author: Veronica Vieira, Scott Bartell, and Robin Bliss
 Maintainer: Scott Bartell <sbartell@uci.edu>
-Description: Contains functions for mapping risk surfaces using
-        individual-level data such as case-control study data, using
-        generalized additive models (GAMs) to smooth over
-        two-dimensional location while adjusting for any confounding
-        variables.  Includes convenient functions for mapping and
-        permutation tests for the null hypothesis that spatial location
-        is not associated with risk (adjusting for confounders).
+Description: Contains functions for mapping odds ratios or other effect estimates using individual-level data such as case-control study data, using generalized additive models (GAMs) for smoothing with a two-dimensional predictor (e.g., geolocation or exposure to chemical mixtures) while adjusting for confounding variables, using methods described by Kelsall and Diggle (1998) and Webster at al. (2006).  Includes convenient functions for mapping, efficient control sampling, and permutation tests for the null hypothesis that the two-dimensional predictor is not associated with the outcome variable (adjusting for confounders).     
 License: GPL-3
 Depends: R (>= 2.10.0), gam, maptools
 Suggests: maps, mapproj, PBSmapping
-Packaged: 2013-03-11 09:06:44 UTC; sbartell
+Packaged: 2013-12-12 21:42:45 UTC; sbartell
 NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2013-03-11 11:44:31
+Date/Publication: 2013-12-13 00:20:17

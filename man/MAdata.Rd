@@ -9,12 +9,14 @@ Synthetic Case-Control Data for Massachusetts
 
 \usage{data(MAdata)}
 \format{
-  A data frame with 1000 observations on the following 4 variables.
+  A data frame with 1000 observations on the following 6 variables.
   \describe{
     \item{\code{Case}}{0 for controls, 1 for cases}
     \item{\code{Xcoord}}{projected X coordinate}
     \item{\code{Ycoord}}{projected Y coordinate}
     \item{\code{Smoking}}{0 for nonsmokers, 1 for smokers}
+    \item{\code{mercury}}{continuous variable for mercury exposure}
+    \item{\code{selenium}}{continuous variable for selenium exposure}
   }
 }
 
@@ -26,6 +28,7 @@ Lambert conformal conic projection for the State of Massachusetts, using standar
 2010 ISEE/ISES GamMAP workshop: \url{http://www.cireeh.org/pmwiki.php/Main/Gam-mapWorkshop}
 
 \url{http://www.busrp.org/projects/project2.html}
+(Mercury and selenium exposure variables added in December 2013)   
 }
 
 \examples{

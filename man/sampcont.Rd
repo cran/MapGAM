@@ -7,7 +7,8 @@ Unmatched Control Sampling
 Take all cases and a random sample of controls from a data frame.  Simple random sampling and stratified random sampling are available.  For statified random sampling, strata can be defined by region, or by region and time.  If no specific regions are specified then the function will create a regular grid for sampling.     
 }
 \usage{
-sampcont(rdata, type = "stratified", regions = NULL, times = NULL, n = 1, nrow = 100, ncol = 100)
+sampcont(rdata, type = "stratified", regions = NULL, times = NULL, n = 1, 
+         nrow = 100, ncol = 100)
 }
 \arguments{
   \item{rdata}{

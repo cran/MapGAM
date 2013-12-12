@@ -1,9 +1,10 @@
 colormap <-
-function(modgamobj, map=NULL, add=F, mapmin=NULL, mapmax=NULL, ptsize=0.9, alpha=0.05) {
-	results = cbind(modgamobj$grid,modgamobj$OR)
+function(modgamobj, map=NULL, add=F, mapmin=NULL, mapmax=NULL, arrow=T, ptsize=0.9, alpha=0.05) {
+	if (!is.null(modgamobj$OR)) fitvals=modgamobj$OR else fitvals=modgamobj$fit 
+	results = cbind(modgamobj$grid,fitvals)
 	if (!is.null(modgamobj$pointwise)) results = cbind(results,modgamobj$pointwise)
-	if (is.null(mapmin)) mapmin=round(min(results[,3]),2)
-	if (is.null(mapmax)) mapmax=round(max(results[,3]),2)
+	if (is.null(mapmin)) mapmin=min(results[,3])
+	if (is.null(mapmax)) mapmax=max(results[,3])
 	dataXmin=min(results[,1])
 	dataXmax=max(results[,1])
 	dataYmin=min(results[,2])
@@ -39,21 +40,24 @@ function(modgamobj, map=NULL, add=F, mapmin=NULL, mapmax=NULL, ptsize=0.9, alpha
 	}
 
 	# LEGEND
-	leglab = "Odds Ratios"
+	if (!is.null(modgamobj$OR)) leglab = "Odds Ratios" else leglab = "Predicted Values"
 	if (!is.null(modgamobj$m)) leglab = paste(modgamobj$m,leglab)
 	len=(dataXmax-dataXmin)*2/3
 	stop=trunc(len*(1-mapmin)/(mapmax-mapmin)/(len/2252))
 	points(dataXmin+(1:2252*len/2252),rep(dataYmin-0.5*offsetY,2252),cex=1.6,col=cp[2253-1:2252],pch=15)
 	points(dataXmin+len*(1-mapmin)/(mapmax-mapmin),(dataYmin-0.5*offsetY),cex=.8,col="black", pch="|", lwd=2)
-	text(x=dataXmin,y=(dataYmin-0.5*offsetY),pos=1,labels=format(mapmin,nsmall=2),cex=.8)
-	text(x=dataXmin+len,y=(dataYmin-0.5*offsetY),pos=1,labels=format(mapmax,nsmall=2),cex=.8)
-	text(x=dataXmin+len*(1-mapmin)/(mapmax-mapmin),y=(dataYmin-0.5*offsetY),pos=1,labels="1.00",cex=.8)
+	text(x=dataXmin,y=(dataYmin-0.5*offsetY),pos=1,labels=format(round(mapmin,2),digits=3),cex=.8)
+	text(x=dataXmin+len,y=(dataYmin-0.5*offsetY),pos=1,labels=format(round(mapmax,2),digits=3),cex=.8)
+	if (!is.null(modgamobj$OR)) text(x=dataXmin+len*(1-mapmin)/(mapmax-mapmin),
+		y=(dataYmin-0.5*offsetY),pos=1,labels="1.00",cex=.8)	# only add line at 1 for ORs
 	text(x=dataXmin+len/2,y=(dataYmin-0.5*offsetY),pos=3,labels=leglab,cex=1) 
 
 	# NORTH ARROW
-	points(dataXmax,dataYmin-0.65*offsetY,cex=1.2,col="black", pch="|", lwd=2)
-	points(dataXmax-0.01*offsetX,dataYmin-0.5*offsetY,cex=1.2,col="black", bg="black", pch=24)
-	text(x=dataXmax,y=(dataYmin-0.5*offsetY),"N",cex=1,pos=3)
+	if (arrow) {
+		points(dataXmax,dataYmin-0.65*offsetY,cex=1.2,col="black", pch="|", lwd=2)
+		points(dataXmax-0.01*offsetX,dataYmin-0.5*offsetY,cex=1.2,col="black", bg="black", pch=24)
+		text(x=dataXmax,y=(dataYmin-0.5*offsetY),"N",cex=1,pos=3)
+	}
 
 	# SCALE BAR
 	if (is.null(map)==F & class(map)=="SpatialPolygonsDataFrame") {
