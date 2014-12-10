@@ -7,10 +7,11 @@ function(rdata, type="stratified", regions=NULL, times=NULL, n=1, nrow=100, ncol
       XYnames = names(rdata)[2:3]
       Xrange = range(rdata[,2])
       Yrange = range(rdata[,3])
-      polyGrid = makeGrid(x=seq(Xrange[1],Xrange[2],length.out=nrow), y=seq(Yrange[1],Yrange[2],length.out=ncol))
+      polyGrid = PBSmapping::makeGrid(x=seq(Xrange[1],Xrange[2],length.out=nrow),
+      		y=seq(Yrange[1],Yrange[2],length.out=ncol))
       names(rdata)[2:3] = c("X","Y")
       rdata$EID = 1:length(rdata$X)
-      idpolys = findCells(as.EventData(rdata),polyGrid)
+      idpolys = PBSmapping::findCells(PBSmapping::as.EventData(rdata),polyGrid)
       rdata = merge(idpolys,rdata)
       regions = paste((1:nrow)[rdata$PID],(1:ncol)[rdata$SID],sep=",")
       rdata = rdata[,!(names(rdata) %in% c("EID","PID","SID","Bdry"))]

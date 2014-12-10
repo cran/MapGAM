@@ -30,7 +30,7 @@ A fraction of the map range to add to either side of the rectangular boundary be
 }
 }
 \details{
-Various functions from the PBSmapping package and maptools package are used to convert map formats, check whether the map and data are aligned, and clip the grid.  Be sure to use \code{fill=T} when using the \code{map} function to produce maps for \code{trimdata}: maps produced using the default \code{fill=F} argument do not work properly with this function.  If the map centroid is not in the range of the data a warning message is printed; this might indicate differing projections but can occur naturally when the data were not sampled from the entire extent of the map or when map boundaries are concave.      
+Various functions from the PBSmapping package and maptools package are used to convert map formats, check whether the map and data are aligned, and clip the grid.  Without the PBSmapping package only \code{rectangle=TRUE} will work.  Be sure to use \code{fill=T} when using the \code{map} function to produce maps for \code{trimdata}: maps produced using the default \code{fill=F} argument do not work properly with this function.  If the map centroid is not in the range of the data and the PBSmapping package is available a warning message is printed; this might indicate differing projections but can occur naturally when the data were not sampled from the entire extent of the map or when map boundaries are concave.      
 }
 
 \value{

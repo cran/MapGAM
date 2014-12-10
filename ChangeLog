@@ -1,3 +1,17 @@
+2014-12-10  Scott Bartell <sbartell@uci.edu>
+
+	* DESCRIPTION (Version): New version is 0.7-4
+
+	* R/colormap.R: changed to improve scale size and appearance, and position 
+	of legend.  Added "contours" argument for contours based on either permutation
+	test p-values or predicted response.  Also fixed error in example code.
+
+	* NAMESPACE: added import and importFrom commands to conform to new CRAN policy.    
+
+	* R/sampcont.R, R/trimdata.R: added PBSmapping:: to functions called from 
+	that package, and updated documentation to clarify which options require
+	PBSmapping.  
+
 2013-12-12  Scott Bartell <sbartell@uci.edu>
 
 	* DESCRIPTION (Version): New version is 0.7-0

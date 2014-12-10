@@ -15,19 +15,23 @@ function(rdata, map, Xcol=2, Ycol=3, rectangle=F, buffer=0.05) {
 		Xcol = 1
 		Ycol = 2
 	}
-	# Print warning if the map centroid is not within the data range
-    centroid = calcCentroid(combinePolys(mappoly),rollup=1)[-1]
-	dataXmin=min(rdata[,Xcol])
+    dataXmin=min(rdata[,Xcol])
 	dataXmax=max(rdata[,Xcol])
 	dataYmin=min(rdata[,Ycol])
 	dataYmax=max(rdata[,Ycol])
-	mapmean=0+(dataXmin<centroid$X)+(centroid$X<dataXmax)+(dataYmin<centroid$Y)+(centroid$Y<dataYmax)
-	if (mapmean!=4) {				
+	dr = c(dataXmin,dataXmax,dataYmin,dataYmax)		# data range
+	
+	# Print warning if the map centroid is not within the data range
+	# only works if PBSmapping library is loaded
+	if (requireNamespace("PBSmapping", quietly = TRUE)) {
+      centroid = PBSmapping::calcCentroid(PBSmapping::combinePolys(mappoly),rollup=1)[-1]
+	  mapmean=(dataXmin<centroid$X)+(centroid$X<dataXmax)+(dataYmin<centroid$Y)+(centroid$Y<dataYmax)
+	  if (mapmean!=4) {				
 		warning("The map centroid is not in the range of the data.  This might indicate differing projections.")
-		dr = c(dataXmin,dataXmax,dataYmin,dataYmax)		# data range
 		cat(paste(c("Data X: "," to ","; Data Y: "," to "),signif(dr,digits=4),sep="",collapse=""),fill=TRUE)
 		cat(paste(c("Map X: "," to ","; Map Y: "," to "),signif(mr,digits=4),sep="",collapse=""),fill=TRUE)
 		cat(paste(c("Map centroid: ",", "),signif(centroid,digits=4),sep="",collapse=""),fill=TRUE)
+	  }
 	}
 	if (rectangle==T) { 
 		# Keep subset of data within a rectangular boundary using map coordinate ranges
@@ -41,8 +45,8 @@ function(rdata, map, Xcol=2, Ycol=3, rectangle=F, buffer=0.05) {
 		rdn = names(rdata)
 		rdata$EID = 1:length(rdata[,1])
 		names(rdata)[c(Xcol,Ycol)] = c("X","Y")
-		maped=as.EventData(rdata)
-		mapfind=findPolys(maped,mappoly)$EID	
+		maped=PBSmapping::as.EventData(rdata)
+		mapfind=PBSmapping::findPolys(maped,mappoly)$EID	
 		rdata = rdata[rdata$EID %in% mapfind,]
 		rdata = rdata[,!(names(rdata) %in% "EID")]	# keep all but EID variable
 		names(rdata) = rdn							# restore original variable names

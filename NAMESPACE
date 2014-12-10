@@ -1,1 +1,3 @@
+import(sp, gam)
+importFrom(maptools, SpatialPolygons2PolySet, map2SpatialLines, SpatialLines2PolySet)
 exportPattern("^[[:alpha:]]+")
