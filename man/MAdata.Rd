@@ -27,7 +27,7 @@ Lambert conformal conic projection for the State of Massachusetts, using standar
 \source{
 2010 ISEE/ISES GamMAP workshop: \url{http://www.cireeh.org/pmwiki.php/Main/Gam-mapWorkshop}
 
-\url{http://www.busrp.org/projects/project2.html}
+\url{http://www.busrp.org/projects/project-2-analyzing-patterns-in-epidemiologic-and-toxicologic-data}
 (Mercury and selenium exposure variables added in December 2013)   
 }
 

@@ -5,7 +5,7 @@ function(rdata, map, Xcol=2, Ycol=3, rectangle=F, buffer=0.05) {
 		mr = c(range(mappoly$X),range(mappoly$Y))	# map range
 	} else 
 	if (class(map)=="map") {
-		map_sp = map2SpatialLines(map,proj4string=CRS("+proj=longlat +datum=wgs84"))	
+		map_sp = map2SpatialLines(map,proj4string=CRS("+proj=longlat +datum=WGS84"))	
 		mappoly=SpatialLines2PolySet(map_sp)
 		mr = map$range		# map range
 	} else

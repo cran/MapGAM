@@ -74,9 +74,6 @@ Vieira V, Webster T, Weinberg J, Aschengrau A, Ozonoff D. \href{http://www.ehjou
 Webster T, Vieira V, Weinberg J, Aschengrau A. \href{http://www.ij-healthgeographics.com/content/5/1/26}{Method for mapping population-based case-control studies using Generalized Additive Models}. International Journal of Health Geographics 2006, 5:26.
 
 Young RL, Weinberg J, Vieira V, Ozonoff A, Webster TF. \href{http://www.ij-healthgeographics.com/content/9/1/37}{A power comparison of generalized additive models and the spatial scan statistic in a case-control setting}. International Journal of Health Geographics 2010, 9:37.
-
-\url{http://www.busrp.org/projects/project2.html}
-
 }
 
 \author{
@@ -143,7 +140,7 @@ expgrid <- predgrid(ma2)
 fit4 <- modgam(ma2,expgrid,sp=.5,m="crude") 
 summary(fit4$OR)
 # plot the results, with mercury on the X axis and selenium on the Y axis
-colormap(fit4, contours="response", arrow=FALSE) 
+colormap(fit4, contours="response", arrow=FALSE, axes=TRUE) 
 }
 }
 

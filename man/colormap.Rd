@@ -8,7 +8,7 @@ Displays a color image map, including a legend, scale bar, and optional North ar
 }
 \usage{
 colormap(modgamobj, map = NULL, add=F, contours="none", mapmin = NULL, mapmax = NULL, 
-         arrow = T, ptsize = 0.9, alpha = 0.05)
+         arrow = T, axes = F, ptsize = 0.9, alpha = 0.05)
 }
 \arguments{
   \item{modgamobj}{
@@ -33,6 +33,9 @@ The maximum value for the color scale legend
 }
   \item{arrow}{
 Use arrow=T to add a North arrow to the map.  	
+}
+  \item{axes}{
+Use axes=T to add axes to the map (useful for chemical mixture isoboles).
 }
   \item{ptsize}{
 The size of the points used to fill in colors on the map.  Increase to remove white space inside the map or decrease to remove color outside the map boundaries.  NOTE: white space can also be eliminated by increasing the grid size in \code{predgrid}, which is often preferable as it results in a higher resolution map.   

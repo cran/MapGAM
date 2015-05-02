@@ -1,6 +1,6 @@
 colormap <-
 function(modgamobj, map=NULL, add=F, contours="none", mapmin=NULL, mapmax=NULL, 
-	arrow=T, ptsize=0.9, alpha=0.05) {
+	arrow=T, axes=F, ptsize=0.9, alpha=0.05) {
 	if (!is.null(modgamobj$OR)) fitvals=modgamobj$OR else fitvals=modgamobj$fit 
 	results = cbind(modgamobj$grid,fitvals)
 	if (!is.null(modgamobj$pointwise)) results = cbind(results,modgamobj$pointwise)
@@ -26,11 +26,21 @@ function(modgamobj, map=NULL, add=F, contours="none", mapmin=NULL, mapmax=NULL,
 	cp = rainbow(2252,start=0,end=0.66)
 	col.seq = rev(cp)
 	grad = cut(results[,3],breaks=c(0,qu,Inf),labels=F)
-	if (add==T) points(modgamobj$grid,col=col.seq[grad],pch=15,cex=ptsize) else {
+	par(xpd=TRUE)
+	if (add==T) points(modgamobj$grid,col=col.seq[grad],pch=15,cex=ptsize) else
+	if (axes==F) {
 		par(mai=c(0,0.35,0.7,0.35))
 		plot(modgamobj$grid,col=col.seq[grad],pch=15,cex=ptsize,type="p",
 			 xlim=c(dataXmin-0.4*offsetX,dataXmax+0.4*offsetX),
 			 ylim=c(dataYmin-0.8*offsetY,dataYmax),ann=F,axes=F)
+	   }  else
+	if (axes==T) {
+#		par(mai=c(1.52,0.82,0.82,1.42))
+		par(mai=c(1,0.82,1,0.5))
+		plot(modgamobj$grid,col=col.seq[grad],pch=15,cex=ptsize,type="p",
+			xlab="", xaxt="n")
+		axis(3)
+		mtext(names(modgamobj$grid[1]), side=3, line=3)
 	}
 	if (!is.null(map)) {
 		if (class(map)=="SpatialPolygonsDataFrame") plot(map, border=gray(0.3), add=T) else {
@@ -62,9 +72,10 @@ function(modgamobj, map=NULL, add=F, contours="none", mapmin=NULL, mapmax=NULL,
 	# LEGEND
 	if (!is.null(modgamobj$OR)) leglab = "Odds Ratios" else leglab = "Predicted Values"
 	if (!is.null(modgamobj$m)) leglab = paste(modgamobj$m,leglab)
-	ypos = dataYmin-0.5*offsetY
+    fY = 0.5 + 0.5*(axes==T)
+	ypos = dataYmin-fY*offsetY
 	len = (dataXmax-dataXmin)*7/12
-	points(dataXmin+(1:2252*len/2252),rep(dataYmin-0.5*offsetY,2252),cex=1.6,col=cp[2253-1:2252],pch=15)
+	points(dataXmin+(1:2252*len/2252),rep(ypos,2252),cex=1.6,col=cp[2253-1:2252],pch=15)
 	if (!is.null(modgamobj$OR))  points(dataXmin+len*(1-mapmin)/(mapmax-mapmin),
 		ypos,cex=.8,col="black", pch="|", lwd=2)  # only add line at 1 for ORs
 	text(x=dataXmin,y=ypos,pos=1,labels=format(round(mapmin,2),digits=3),cex=.8)
