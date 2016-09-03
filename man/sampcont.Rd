@@ -7,12 +7,21 @@ Unmatched Control Sampling
 Take all cases and a random sample of controls from a data frame.  Simple random sampling and stratified random sampling are available.  For statified random sampling, strata can be defined by region, or by region and time.  If no specific regions are specified then the function will create a regular grid for sampling.     
 }
 \usage{
-sampcont(rdata, type = "stratified", regions = NULL, times = NULL, n = 1, 
-         nrow = 100, ncol = 100)
+sampcont(rdata, type = "stratified", casecol=1, Xcol=2, Ycol=3, regions = NULL, 
+		addstrat = NULL, times = NULL, n = 1, nrow = 100, ncol = 100)
 }
 \arguments{
   \item{rdata}{
-A data frame with the outcome (coded as 0/1) in the 1st column, and the geocoordinates (e.g., X and Y) in the 2nd and 3rd columns.  Additional columns are not used in the sampling scheme but are retained in the sampled data frame.  
+A data frame with case status in the \code{casecol} column (by default, the 1st column), and the geocoordinates (e.g., X and Y) in the \code{Xcol} and \code{Ycol} columns (by default, the 2nd and 3rd columns).  Additional columns are not used in the sampling scheme but are retained in the sampled data frame.  
+}
+  \item{casecol}{
+The column number in \code{rdata} for the case status (coded with 0 for controls, 1 for cases).  	
+}
+  \item{Xcol}{
+The column number in \code{rdata} for the X geocoordinate.	
+}
+  \item{Ycol}{
+The column number in \code{rdata} for the Y geocoordinate.  	
 }
   \item{type}{
 "stratified" (default) or "simple".  If "simple" then a simple random sample of \code{n} controls (rows of \code{rdata} with outcome=0) is obtained.  If "stratified" then a stratified random sample of controls is obtained, with up to \code{n} controls per stratum.  Sampling strata are defined by the \code{regions} and \code{times} arguments.  All cases (rows with outcome=1) are taken for the sample regardless of the value supplied for \code{type}.  
@@ -20,8 +29,11 @@ A data frame with the outcome (coded as 0/1) in the 1st column, and the geocoord
   \item{regions}{
 A vector of length equal to the number of rows in \code{rdata}, used to construct sampling strata.  Only used if \code{type = "stratified"}.  If \code{regions = NULL} and the PBSmapping package is available then the function will define \code{regions} as a vector of specific grid cells on a regular grid with \code{nrow} rows and \code{ncol} columns.  If \code{times = NULL} then the nonempty regions are used as the sampling strata.  If \code{times} is a vector, then the sampling strata are all nonempty combinations of \code{regions} and \code{times}.      
 }
+  \item{addstrat}{
+A vector of length equal to the number of rows in \code{rdata}, used along with \code{regions} to construct sampling strata.  If \code{addstrat = NULL} then the sampling strata are defined only by the \code{regions} argument.  If \code{addstrat} is a vector, then the sampling strata are all nonempty combinations of \code{regions} and \code{addstrat}.  Continuous variables should generally be binned before being passed through this argument, as there are no efficiency gains if each value in \code{addstrat} is unique.     
+}
   \item{times}{
-A vector of length equal to the number of rows in \code{rdata}, used to construct sampling strata.  If \code{times = NULL} then the sampling strata are defined only by the \code{regions} argument.  If \code{times} is a vector, then the sampling strata are all nonempty combinations of \code{regions} and \code{times}.  Continuous times should generally be binned before being passed through this argument, as there are no efficiency gains if each value in \code{times} is unique.     
+Included for backward compatibility; now replaced by the \code{addstrat} argument which serves the same purpose.   	
 }
   \item{n}{
 The number of controls to sample from the eligible controls in each stratum.  All available controls will be taken for strata with fewer than \code{n} eligible controls.  

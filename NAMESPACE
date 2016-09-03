@@ -1,3 +1,15 @@
-import(sp, gam)
+import(sp, gam, survival)
 importFrom(maptools, SpatialPolygons2PolySet, map2SpatialLines, SpatialLines2PolySet)
 exportPattern("^[[:alpha:]]+")
+S3method(plot, modgam)
+S3method(predict, gamcox)
+S3method(print, gamcox)
+S3method(print, modgam)
+importFrom("grDevices", "gray", "rainbow")
+importFrom("graphics", "axis", "contour", "lines", "mtext", "par",
+             "points", "text", "title")
+importFrom("stats", ".getXlevels", "AIC", "as.formula", "binomial",
+             "coef", "contrasts", "delete.response", "is.empty.model",
+             "lm", "loess", "loess.control", "median", "model.frame",
+             "model.matrix", "pchisq", "predict", "qnorm", "pnorm", 
+             "reshape", "terms", "vcov", "weighted.mean")

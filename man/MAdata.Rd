@@ -15,8 +15,8 @@ Synthetic Case-Control Data for Massachusetts
     \item{\code{Xcoord}}{projected X coordinate}
     \item{\code{Ycoord}}{projected Y coordinate}
     \item{\code{Smoking}}{0 for nonsmokers, 1 for smokers}
-    \item{\code{mercury}}{continuous variable for mercury exposure}
-    \item{\code{selenium}}{continuous variable for selenium exposure}
+    \item{\code{Mercury}}{continuous variable for mercury exposure}
+    \item{\code{Selenium}}{continuous variable for selenium exposure}
   }
 }
 
@@ -25,10 +25,7 @@ Lambert conformal conic projection for the State of Massachusetts, using standar
 }
 
 \source{
-2010 ISEE/ISES GamMAP workshop: \url{http://www.cireeh.org/pmwiki.php/Main/Gam-mapWorkshop}
-
-\url{http://www.busrp.org/projects/project-2-analyzing-patterns-in-epidemiologic-and-toxicologic-data}
-(Mercury and selenium exposure variables added in December 2013)   
+Simulated data provided by package authors
 }
 
 \examples{

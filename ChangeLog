@@ -1,3 +1,39 @@
+2016-06-19 Lu Bai
+  * DESCRIPTION (Version): New version is 1.0
+  
+  * R/gamcox.R, R/print.gamcox.R, R/predict.gamcox.R: MAPGAM now includes functions
+  to fit a Cox additive model for survival data by calling gamcox or specifying 
+  family = "survival" in modgam. The model returned a object of class "gamcox", 
+  which can be expressed by print and predict.
+  
+  * R/modgam.R: modgam now can fit both GAM and GAMCOX models. Added an option 
+  "survival" for argument "family". Added "formula" argument(optional), which 
+  allow for specifying the model using formula expression. Added "se.fit" argument
+  to specify whether to compute pointwise standard errors and confidence intervals.
+  Set a class for the returned object, "modgam".  The returned object has some
+  differences from previous versions of MapGAM, such as "exp" instead of "OR" for
+  exponentiated fit values.  
+  
+  * R/mypredict.gam.R: Can be used to compute pointwise standard errors for new 
+  predictions based on a gam object which the predict.gam function in gam package 
+  can not do. 
+  
+  * R/optspan.R: Added "spans" argument so that the candidate spans can be specified
+  flexibly.
+
+  * R/colormap.R: Added an option "interval" for argument "contours" to plot countours
+  to specify areas where confidence intervals exclude zero. Added "contours.drawlables",
+  "contours.lwd", "contours.lty", "contours.levels", "contours.labcex" to make plotting
+   contour lines more flexibly. Added "legend.name", "legend.cex" and "legend.add.line"
+   to improve appearance.
+  
+  * R/plot.modgam.R, R/print.modgam.R: print and plot functions for object returned
+  by modgam. For plot, optionally, if the object containes confidence intervals, 
+  colormap of confidence intervals can be generated.
+  
+  * data/CAdata.rda, data/CAgrid.rda, data/CAmap.rda: Added three data set for examples
+  of analysing spatial effects on survival rates.
+
 2015-05-02  Scott Bartell <sbartell@uci.edu>
 
 	* DESCRIPTION (Version): New version is 0.7-5
