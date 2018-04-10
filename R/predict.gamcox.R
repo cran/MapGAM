@@ -1,9 +1,30 @@
-predict.gamcox <- function(object,newdata=object$data,se.fit=FALSE,type=c("spatial","all"),reference="median",level=0.05,verbose=FALSE,...)
+#***********************************************************************************
+#
+# Prediction Method for gamcox() Fits
+# Copyright (C) 2016, The University of California, Irvine
+#
+# This library is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this library??? if not, <http://www.gnu.org/licenses/>.
+#
+#*******************************************************************************
+predict.gamcox <- function(object, newdata=object$data, se.fit=FALSE, type=c("spatial","all"),
+                           reference="median", level=0.05, verbose=FALSE,...)
 {
   type=type[1]
   if(all(is.na(match(type,c("spatial","all"))))) 
     stop("type should be either 'spatial' or 'all'")
-  ####### check whether newdata has geolocation variables ##################
+  
+  ## check whether newdata has geolocation variables 
   X.names = names(object$data)
   coords.name = colnames(object$smooth.frame)
   if(length(as.integer(dim(newdata))[1])==0) 
@@ -14,7 +35,8 @@ predict.gamcox <- function(object,newdata=object$data,se.fit=FALSE,type=c("spati
   
   terms = object$term
   tt = delete.response(terms) 
-  ################ check reference type ####################
+  
+  ## check reference type 
   if(!is.element(reference[1],c("median","mean"))){
     ref.name = names(reference)
     if(type=="spatial"){
@@ -32,7 +54,7 @@ predict.gamcox <- function(object,newdata=object$data,se.fit=FALSE,type=c("spati
     }
   }
   
-  ##### fill in newdata#######################
+  ## Fill in newdata
   N.new = dim(newdata)[1]
   og.new = dim(newdata)[2]
   factor.name = names(object$xlevels)
@@ -60,7 +82,7 @@ predict.gamcox <- function(object,newdata=object$data,se.fit=FALSE,type=c("spati
   mf.new = model.frame(tt,newdata,xlev=object$xlevels)
   newdata.matrix = model.matrix(tt, mf.new)[,-1]
   
-  #### make predictions#######################  
+  ## Make predictions
   order = attr(tt,"specials")$lo
   coords.order = 1:2
   labels = names(mf.new)
@@ -72,8 +94,7 @@ predict.gamcox <- function(object,newdata=object$data,se.fit=FALSE,type=c("spati
       coords.order = coords.order + 1
     }
 
-  
-  mat = newdata.matrix
+    mat = newdata.matrix
   if(!is.element(reference[1],c("median","mean"))){
     if(type=="all")  mat = rbind(newdata.matrix,ref.X)
     if(type == "spatial"){
@@ -99,13 +120,12 @@ predict.gamcox <- function(object,newdata=object$data,se.fit=FALSE,type=c("spati
   if(!se.fit){
     return(list(pred=pred-ref,reference=ref,reference.type=reference,predict.type=type))
   }else{
+  ## Confidence intervals
       rslt <- list(pred=pred-ref)
-#    if(adjust){
       cov.mat <- object$cov[pred.index,pred.index]
       csdata <- newdata.matrix - as.matrix(rep(1,N.new))%*%apply(object$X,2,mean)
       csdata <- csdata[,pred.index]
       var.l <- rowSums((csdata%*%cov.mat)*csdata)
-#    }else{ var.l = 0}
     sde <- sqrt(var.l + pred.object$se.fit[1:N.new]^2)
     rslt=list(pred=pred-ref)
     rslt$conf.low <- rslt$pred + qnorm(level/2)*sde; rslt$conf.high=rslt$pred+qnorm(1-level/2)*sde

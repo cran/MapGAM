@@ -15,40 +15,40 @@ gamcox.fit(Y, X, smooth.frame, weights, span=0.5, I.span=0.2, degree = 1,
 }
 \arguments{
   \item{formula}{
-A formula expression (required), with the response on the left of a ~ oprator, and the predictors on the right. The response must be a survival object as returned by the Surv function. A built-in nonparametric smoothing term is indicated by \code{lo} for loess smooth terms. The two-dimensional predictor (e.g.,geolocation) should be specified as auguments in \code{lo()}.
+a formula expression (required), with the response on the left of a ~ oprator, and the predictors on the right. The response must be a survival object as returned by the Surv function. A built-in nonparametric smoothing term is indicated by \code{lo} for loess smooth terms. The two-dimensional predictor (e.g.,geolocation) should be specified as auguments in \code{lo()}.
 }
   \item{data}{
-A data frame containing the variables in the model.If not found in \code{data}, the variables are taken from \code{environment(formula)}.
+a data frame containing the variables in the model.If not found in \code{data}, the variables are taken from \code{environment(formula)}.
 }
   \item{Y, X}{
-For \code{gamcox.fit}: \code{Y} is a list including two elements: \code{time} for survival times and \code{event} for censoring status. \code{X} is a data frame containing the variables in the model. The data must be structured so that the X and Y coordinates for two-dimensional predictor (e.g., geolocation) are in the 1st and 2nd columns, respectively. 
+for \code{gamcox.fit}: \code{Y} is a list including two elements: \code{time} for survival times and \code{event} for censoring status. \code{X} is a data frame containing the variables in the model. The data must be structured so that the X and Y coordinates for two-dimensional predictor (e.g., geolocation) are in the 1st and 2nd columns, respectively. 
 }
   \item{smooth.frame}{
-Model matrix for the smooth term  
+the model matrix for the smooth term.  
 }
   \item{subset}{
-An optional vector specifying a subset of observations to be used in the fitting process.
+an optional vector specifying a subset of observations to be used in the fitting process.
 }
   \item{weights}{
 an optional vector of weights to be used in the fitting process.
 }
   \item{span}{
-Span size for the LOESS smooth of the two-dimensional predictor, which controls the degree of smoothing. 
+the span size for the LOESS smooth of the two-dimensional predictor, which controls the degree of smoothing. 
 }
   \item{I.span}{
-Span size for the LOESS smooth of the Fisher information. 
+the span size for the LOESS smooth of the Fisher information. 
 }
   \item{degree}{
-The degree of the polynomials to be used for LOESS smooth, normally 1 or 2.
+the degree of the polynomials to be used for LOESS smooth, normally 1 or 2.
 }
   \item{loess.trace}{
-Whether the trace of the smoother matrix be computed exactly or approximately. It is recommended to use the approximation for more than about 1000 data points.
+whether the trace of the smoother matrix be computed exactly (\code{"exact"}) or approximately (\code{"approximate"}). It is recommended to use \code{"approximate"} for more than about 1000 data points.
 }
   \item{Maxiter}{
-Maximum iterations in backfitting algorithm.  
+the maximum number of iterations in backfitting algorithm.  
 }
   \item{tol}{
-Tolerence threshold for convergence.  
+the tolerence threshold for convergence.  
 }
 }
 
@@ -61,23 +61,23 @@ where \eqn{\boldsymbol{\lambda}(t)}{\lambda(t)} is the hazard at time \emph{t} f
 
 \value{
 
-\code{gamcox} returns an object of class \code{modgam}. It can be examined by \code{print} and \code{predict}.
+\code{gamcox} returns an object of class \code{gamcox}. It can be examined by \code{print} and \code{predict}.
 
 
-\item{coefficients}{the coefficients of the parametric part of the additive.predictors, which multiply the columns of the model matrix. The names of the coefficients are the names of the single-degree-of-freedom effects (the columns of the model matrix). If the model is overdetermined there will be missing values in the coefficients corresponding to inestimable coefficients.}
+\item{coefficients}{a named vector of coefficients for the parametric part of the additive predictors, which multiply the columns of the model matrix. The names of the coefficients are the names of the single-degree-of-freedom effects (the columns of the model matrix). If the model is overdetermined there will be missing values in the coefficients corresponding to inestimable coefficients.}
 
-\item{additive.predictors}{the additive fit, given by the product of the model matrix and the coefficients, plus the columns of the \code{$smooth} component}
+\item{additive.predictors}{the additive fit, given by the product of the model matrix and the coefficients, plus the columns of the \code{$smooth} component.}
 
 \item{smooth}{
-Estimated smoothing term. Nonlinear part of the spatial effect on survival rates.
+estimated smoothing term. Nonlinear part of the spatial effect on survival rates.
 }
 \item{var}{
-The approximate pointwise variances for the columns of smooth.}
+the approximate pointwise variances for the columns of smooth.}
 
 \item{residuals}{the residuals from the final weighted additive fit; also known as residuals, these are typically not interpretable without rescaling by the weights.}
 \item{deviance}{up to a constant, minus twice the maximized log-likelihood. Similar to the residual sum of squares. Where sensible, the constant is chosen so that a saturated model has deviance zero.}
-\item{df.residual}{The residual degrees of freedom.}
-\item{aic}{AIC of the fitted model}
+\item{df.residual}{the residual degrees of freedom.}
+\item{aic}{AIC of the fitted model.}
 }
 
 \references{

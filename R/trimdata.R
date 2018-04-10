@@ -1,5 +1,23 @@
-trimdata <-
-function(rdata, map, Xcol=2, Ycol=3, rectangle=F, buffer=0.05) {
+#***********************************************************************************
+#
+# Trim a Data Set To Map Boundaries 
+# Copyright (C) 2016, The University of California, Irvine
+#
+# This library is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this library??? if not, <http://www.gnu.org/licenses/>.
+#
+#*******************************************************************************
+trimdata <- function(rdata, map, Xcol=2, Ycol=3, rectangle=F, buffer=0.05) {
 	if(class(map)=="SpatialPolygonsDataFrame") {
 		mappoly=SpatialPolygons2PolySet(map) 
 		mr = c(range(mappoly$X),range(mappoly$Y))	# map range

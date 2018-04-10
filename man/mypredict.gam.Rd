@@ -1,7 +1,7 @@
 \name{mypredict.gam}
 \alias{mypredict.gam}
 \title{
-Prediction method for GAM fits}
+Prediction for GAM Fits}
 \description{
 Obtains spatial effects predictions and optionally estimates standard errors and confidence intervals of those predictions from a fitted generalized additive model object.}
 \usage{
@@ -13,34 +13,34 @@ mypredict.gam(object, newdata, se.fit = FALSE, type=c("all","spatial"),
 a fitted \code{gam} object.
 }
   \item{newdata}{
-A data frame containing the values at which predictions are required. This argument can be missing, in which case predictions are made at the same values used to compute the object. Only two-dimentional predictor need be present by name in newdata.
+a data frame containing the values at which predictions are required. This argument can be missing, in which case predictions are made at the same values used to compute the object. Only two-dimentional predictor need be present by name in newdata.
 }
   \item{se.fit}{
-if TRUE, pointwise standard errors and confidence intervals are computed along with the predictions
+if TRUE, pointwise standard errors and confidence intervals are computed along with the predictions.
 }
   \item{type}{
-Use \code{type="spatial"} to estimate spatial effect, and use \code{type="all"}(default) to estimate the effect of all covariates included in the model.  
+use \code{type="spatial"} to estimate spatial effect, and use \code{type="all"}(default) to estimate the effect of all covariates included in the model.  
 }
   \item{reference}{
-Type of reference for the estimated effect. If \code{reference = "median"},  the output will be the estimated effect difference (or log ratio) compared to the median effect. If \code{reference = "mean"},the output will be the estimated effect difference (or log-ratio) compared to the mean effect.If \code{reference} is a data frame indicating a specific geolocation, the output will be the estimated effect difference (or log-ratio) compared to the effect of the geolocation specified by \code{reference}.
+the type of reference for the estimated effect. If \code{reference = "median"},  the output will be the estimated effect difference (or log ratio) compared to the median effect. If \code{reference = "mean"},the output will be the estimated effect difference (or log-ratio) compared to the mean effect.If \code{reference} is a data frame indicating a specific geolocation, the output will be the estimated effect difference (or log-ratio) compared to the effect of the geolocation specified by \code{reference}.
 } 
   \item{level}{
-Siginificance level used when \code{se.fit=TRUE}
+the siginificance level used when \code{se.fit=TRUE}.
   }
      \item{verbose}{
-Logical value indicating whether to print filling values for newdata. The default is \code{verbose = FALSE}.      
+a logical value indicating whether to print filling values for newdata. The default is \code{verbose = FALSE}.      
 }
 }
 
 
 \value{
-\item{pred}{Estimated effect difference or (log ratio) compare to the effect specified by \code{reference}}
+\item{pred}{the estimated effect difference or (log ratio) compare to the effect specified by \code{reference}.}
 
 \item{se}{
-Standard errors along with the predictions.
+the standard errors along with the predictions.
 }
-\item{conf.low}{The lower bounds for pointwise (1-\code{level}) confidence intervals.}
-\item{conf.high}{The higher bounds for pointwise (1-\code{level}) confidence intervals.}
+\item{conf.low}{the lower bounds for pointwise (1-\code{level}) confidence intervals.}
+\item{conf.high}{the higher bounds for pointwise (1-\code{level}) confidence intervals.}
 }
 
 \references{

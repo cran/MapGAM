@@ -11,12 +11,12 @@ Synthetic Case-Control Data for Massachusetts
 \format{
   A data frame with 1000 observations on the following 6 variables.
   \describe{
-    \item{\code{Case}}{0 for controls, 1 for cases}
-    \item{\code{Xcoord}}{projected X coordinate}
-    \item{\code{Ycoord}}{projected Y coordinate}
-    \item{\code{Smoking}}{0 for nonsmokers, 1 for smokers}
-    \item{\code{Mercury}}{continuous variable for mercury exposure}
-    \item{\code{Selenium}}{continuous variable for selenium exposure}
+    \item{\code{Case}}{0 for controls, 1 for cases.}
+    \item{\code{Xcoord}}{projected X coordinate.}
+    \item{\code{Ycoord}}{projected Y coordinate.}
+    \item{\code{Smoking}}{0 for nonsmokers, 1 for smokers.}
+    \item{\code{Mercury}}{continuous variable for mercury exposure.}
+    \item{\code{Selenium}}{continuous variable for selenium exposure.}
   }
 }
 

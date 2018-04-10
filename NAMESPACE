@@ -5,6 +5,15 @@ S3method(plot, modgam)
 S3method(predict, gamcox)
 S3method(print, gamcox)
 S3method(print, modgam)
+S3method(summary, modgam)
+S3method(summary, gamcox)
+S3method(AIC, modgam)
+S3method(coef, modgam)
+S3method(coef, gamcox)
+S3method(formula, gamcox)
+S3method(formula, modgam)
+S3method(residuals, gamcox)
+S3method(residuals, modgam)
 importFrom("grDevices", "gray", "rainbow")
 importFrom("graphics", "axis", "contour", "lines", "mtext", "par",
              "points", "text", "title")
@@ -13,3 +22,4 @@ importFrom("stats", ".getXlevels", "AIC", "as.formula", "binomial",
              "lm", "loess", "loess.control", "median", "model.frame",
              "model.matrix", "pchisq", "predict", "qnorm", "pnorm", 
              "reshape", "terms", "vcov", "weighted.mean")
+importFrom("colorspace", "diverge_hsv")

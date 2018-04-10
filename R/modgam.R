@@ -1,17 +1,46 @@
-modgam = function (formula, rgrid, data, subset, offset, family = binomial(), permute = 0, 
+#***********************************************************************************
+#
+# Fit a Generalized Additive Model with a Bivariate Smooth and Make Predictions
+# Copyright (C) 2016, The University of California, Irvine
+#
+# This library is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this library??? if not, <http://www.gnu.org/licenses/>.
+#
+#*******************************************************************************
+modgam <- function (formula, rgrid, data, subset, offset, family = binomial(), permute = 0, 
                   conditional = TRUE, m = "adjusted", sp = seq(0.05,0.95,0.05), degree = 1, 
-		          keep = FALSE, type=c("spatial","all"), reference = "median", se.fit = FALSE, alpha = 0.05, 
- 	   	          verbose = TRUE, ...)
+                  keep = FALSE, type=c("spatial","all"), reference = "median", se.fit = FALSE, 
+                  alpha = 0.05, verbose = TRUE, ...)
 {
   call <- match.call()
   # for back-compatibility, allow data frame to be passed as first argument
   if(!missing(formula) && is.data.frame(formula)) {
+    offstr = ''
+    if(!missing(offset)){offstr = substr(call['offset'],1,nchar(call['offset']))}
     if (!missing(data)) stop("data can be entered through only one argument (formula or data)")
- 	return(modgam(rgrid=rgrid, data=formula, subset=subset, offset=offset, family=family, permute=permute,
- 	        conditional = conditional, m = m, sp = sp, degree = degree, keep = keep, type=type, 
- 	        reference = reference, se.fit = se.fit, alpha = alpha, verbose = verbose, ...))
+    if(missing(type)){
+      type = "all"
+      if(is.character(family))
+        if(family =="survival")
+          type = "spatial"
+    }
+    return(modgam(rgrid=rgrid, data=formula, subset=subset, offset=offstr, family=family, permute=permute,
+                    conditional = conditional, m = m, sp = sp, degree = degree, keep = keep, type=type, 
+                    reference = reference, se.fit = se.fit, alpha = alpha, verbose = verbose, ...))
+    
   }
-  if(!missing(formula) && !is.data.frame(formula)){
+  if(!missing(formula)){
+    #if formula provided
     if (missing(data)) 
       data <- environment(formula)
     mf <- match.call()
@@ -24,9 +53,8 @@ modgam = function (formula, rgrid, data, subset, offset, family = binomial(), pe
     else terms(formula, c("Surv","lo"), data = data)
     surv = !is.null(attr(mt,"specials")$Surv)
     order = attr(mt,"specials")$lo
-    if(surv){
+    if(surv)
       family = "survival"
-    }
     if(is.character(family))
      if(!surv & tolower(family)[1]=="survival")
         stop("formula misspecified for survival data")
@@ -37,14 +65,15 @@ modgam = function (formula, rgrid, data, subset, offset, family = binomial(), pe
       stop("Two parameters must specified in lo() in the formula")
     if(length(order)>1)
       stop("Only one smoothing function could be included in the model")
-    ### extract coords names, span and length
+    
+    ### Extract coords names, span and length
     span = NULL
     degreef = if(!missing(degree)) degree else NULL
     los <- attr(mt,"term.labels")[order-1]
     los <- gsub("[[:blank:]]","",los)
     start <- gregexpr("\\(",los)[[1]]
     end <-rev(gregexpr("\\)",los)[[1]]) 
-    losub <- substr(los,start[1]+1,end[1]-1)
+    losub <- substr(los, start[1]+1, end[1]-1)
     parts <- strsplit(losub,"\\([^()]*\\)(*SKIP)(*F)|\\h*,\\h*", perl=T)
     coords.name <- parts[[1]][1:2]
     if(ncols>2)
@@ -58,12 +87,15 @@ modgam = function (formula, rgrid, data, subset, offset, family = binomial(), pe
                     if(length(span)==1) span else paste("(",paste(span,collapse=","),")"),
                     "in the formula will be used instead of value of argument sp=", sp))
     if(!is.null(span)) sp = span
-    if(!is.null(degreef))if(degreef!=degree)
-      warning(paste("degree=", degree,"in the formula will be used instead of value of argument degree=", degreef))
-
+    if(!is.null(degreef))
+      if(degreef!=degree)
+        warning(paste("degree=", degree,"in the formula will be used instead of value of argument degree=", degreef))
     if(length(mf)==2) m = "unadjusted" else m="adjusted"
     data <- data[subset,]
   }
+  ## Recognize family
+  if(missing(offset))
+    offset = ''
   dim.min = 3; surv = FALSE
   if(is.character(family)){
      if(tolower(family)== "survival") {	 
@@ -81,11 +113,13 @@ modgam = function (formula, rgrid, data, subset, offset, family = binomial(), pe
   }
   if (is.null(sp)) sp = seq(0.05,0.95,0.05)      # for back-compatibility
   if (length(sp)==1 && !conditional) {
- 	warning("User-specified fixed span size is ignored for conditional = FALSE") 
-	sp = seq(0.05,0.95,0.05)
+ 	  warning("User-specified fixed span size is ignored for conditional = FALSE") 
+	  sp = seq(0.05,0.95,0.05)
   }
   data.name = names(data)
   data.dim = length(data.name)
+  
+  ## Re-organize the data structure
   if(missing(formula)){
     if(data.dim < dim.min) stop(paste("data must include at least", dim.min,"columns"))
     if(tolower(m)=="adjusted"){
@@ -95,15 +129,26 @@ modgam = function (formula, rgrid, data, subset, offset, family = binomial(), pe
        }
        data = data[subset,]
     }else if(tolower(m) == "unadjusted" | tolower(m) == "crude"){
-       data = data[subset,1:dim.min]
-       data.name=data.name[1:dim.min]
-       data.dim = dim.min
+       dimension = 1:dim.min
+       if(offset!=''){
+         for(j in 1:length(data.name)){
+           if(grepl(data.name[j],offset)==1){
+             break
+           }
+         }
+         dimension = c(dimension,j)
+       }
+       data = data[subset,dimension]
+       data.name=data.name[dimension]
+       data.dim = length(dimension)
     }else stop(paste("model type", m, "not recognized"))
     coords.name <- data.name[2:3+surv]
   }
   index <- match(coords.name,names(rgrid))
   if(any(is.na(index)))
     stop("spatial variables in rgrid are not consistent with data")
+  
+  ## Find the optimal span if needed
   if(length(sp)>1) {
     spans <- sp
     sp <- eval(substitute(optspan(formula, data, offset, spans, m, family, verbose, degree,...)))
@@ -120,26 +165,23 @@ modgam = function (formula, rgrid, data, subset, offset, family = binomial(), pe
   }
   if(missing(type)&!surv) type = "all"
   else type = type[1]
-  # warning regarding change in default behavior for gaussian models
+  # Warning regarding change in default behavior for gaussian models
   if (tolower(as.character(family)[1]) == "gaussian" & reference == "median" & type == "all") 
   	warning("MapGAM now uses reference='median' by default; for predicted values use reference='none'") 
+
+  # Fit the model and make predictions
   if(surv){
     model <- eval(substitute(gamcox(fmla,data=as.data.frame(data),...)))
     pred <- predict(model,rgrid,se.fit,type,reference,alpha,verbose,)
     model.0 <- eval(substitute(gamcox(fmla.0,data=as.data.frame(data),...)))
   }else{
-#    jnk <<- list(...)
-#    model <- gam(fmla,family=family,data=as.data.frame(data),weights=jnk[[1]])
-#    pred <- mypredict.gam(model,rgrid,se.fit,type,reference,alpha,verbose)
-#    model.0 <- gam(fmla.0,family=family,data=as.data.frame(data),weights=jnk[[1]])
-    #print(is.function(weight))
     model <- eval(substitute(gam(fmla,family=family,data=as.data.frame(data),...)))
     pred <- mypredict.gam(model,rgrid,se.fit,type,reference,alpha,verbose)
     model.0 <- eval(substitute(gam(fmla.0,family=family,data=as.data.frame(data),...)))
   }
   
   dev = model.0$deviance-model$deviance; df = model.0$df.residual - model$df.residual
-  rslt <- list(grid = rgrid[,index],m=m, family=family, type=type,span=sp,gamobj = model, predobj = pred,
+  rslt <- list(grid = rgrid[,index],family=family, type=type,span=sp,gamobj = model, predobj = pred,
                fit = pred$pred, exp.fit = exp(pred$pred),global.pvalue = 1-pchisq(dev,df=df))
   if(se.fit){
     rslt$se = pred$se
@@ -149,6 +191,7 @@ modgam = function (formula, rgrid, data, subset, offset, family = binomial(), pe
     rslt$exp.conf.high = exp(pred$conf.high)
   }
   
+  ### Permutation test
   if (permute > 0) {
     grid.N = nrow(rgrid)
     data.N = nrow(data)
@@ -167,7 +210,7 @@ modgam = function (formula, rgrid, data, subset, offset, family = binomial(), pe
       if (!conditional) {
         ucsp = optspan(formula, m.data, spans, m, family = family, verbose=F, ...)
         ucspans[i] = ucsp
-        fmla <- toformula(formula, m.data, m, surv, ucsp, degree)
+        fmla <- toformula(formula, m.data, m, surv, ucsp, degree,TRUE,offset)
       }
       if(surv){
         m.gam <- gamcox(fmla,data=as.data.frame(m.data),span=sp,degree=degree,...)

@@ -1,3 +1,27 @@
+2018-04-09 Lu Bai and Scott Bartell
+  * DESCRIPTION (Version): New version is 1.1
+
+  * R/summary.modgam.R: changed class check from "gam" to "Gam" to accomodate class
+  name change from the gam library (starting with gam version 1.15).  
+
+  * R/mypredict.gam.R: corrected error in dispersion parameter estimation for 
+  quasibinomial and quasipoisson families.  Special thanks to Fabian Camacho,
+  University of Virginia, for noticing the problem.   
+  
+  * R/colormap.R, R/plot.modgam.R: several modifications: new arugment allows
+  users to specify any color palette, default palette for plot.modgam is changed to
+  a divergent palette, new colormap help file example compares palettes, the color
+  palette is now anchored on legend.add.line (if legend.add.line is specified),
+  the color gradient now changes on an exponential (instead of linear) scale when 
+  exp=T, help file now suggests readOGR instead of readShapePoly for importing 
+  shapefiles, and formatting changed in the legend.     
+  
+  * added more S3 methods (coef(), formula(), summary(), AIC(), residuals())
+
+  * copyright license information (GPL-3) added to all R code files
+
+  * other minor changes and bug fixes
+
 2016-06-19 Lu Bai
   * DESCRIPTION (Version): New version is 1.0
   

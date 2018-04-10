@@ -1,16 +1,18 @@
 \name{colormap}
 \alias{colormap}
 \title{
-Maps Predicted Values and Clusters on a two-dimentional map
+Maps Predicted Values and Clusters on a Two-Dimentional Map
 }
 \description{
-Displays a color image map, including a legend, scale bar, and optional North arrow, showing values for a grid of points. Irregular grids are allowed.  Also draws contour lines for regions of signficantly increased or decreased values of the outcome variable ("clusters").      
+Displays a color image map, including a legend, scale bar, and optional North arrow, showing values for a grid of points. Irregular grids are allowed.  Also draws contour lines for regions of signficantly increased or decreased predicted values ("clusters").      
 }
 \usage{
-colormap(obj, map=NULL, exp=F, add=F,  mapmin=NULL, mapmax=NULL, border.gray = 0.3,
-         contours="none", contours.drawlabels=FALSE, contours.lty=1,
+colormap(obj, map=NULL, exp=FALSE, add=FALSE,  mapmin=NULL, mapmax=NULL, 
+         col.seq=rev(rainbow(201,start=0,end=0.66)),
+         border.gray = 0.3, contours="none", 
+         contours.drawlabels=FALSE, contours.lty=1,
          contours.lwd=1, contours.levels, contours.labcex=0.7, 
-         interval.exclude=0, arrow=T, axes=F, ptsize=0.9, mai, 
+         interval.exclude=0, arrow=TRUE, axes=FALSE, ptsize=0.9, mai, 
          legend.name = "predicted values",legend.cex=1,
          legend.add.line,alpha,...)
 }
@@ -19,7 +21,7 @@ colormap(obj, map=NULL, exp=F, add=F,  mapmin=NULL, mapmax=NULL, border.gray = 0
 (Required) A list containing at least these two elements:  "grid" (a 2 column data frame with X and Y coordinates) and "fit" (the value to displayed on the map).   
 }
   \item{map}{
-Can be used to map \code{fit} on a base map from the \code{map} function in the \pkg{maps} package, or on a base map produced by the \code{readShapePoly} function in \pkg{maptools} package.  ReadShapePoly reads maps from external files in the ESRI shapefile format.  \code{map=NULL} produces a color image without any base map.
+Can be used to map \code{fit} on a base map from the \code{map} function in the \pkg{maps} package, or on a base map produced by the \code{readOGR} function in the \pkg{rgdal} package.  \code{readOGR} reads maps from external files in the ESRI shapefile format.  \code{map=NULL} produces a color image without any base map.
 }
   \item{exp}{
 If \code{exp=T}, \code{fit} will be displayed in exponential scale.  
@@ -34,6 +36,11 @@ The minimum value for the color scale legend.
 }
   \item{mapmax}{
 The maximum value for the color scale legend.
+}
+  \item{col.seq}{
+The color sequence (palette) used to display the predicted values on the map.  The default is a 
+rainbow palette, but divergent or sequential palettes may be better for some applications.  See the
+colorspace library and the example below for other options.      
 }
   \item{border.gray}{
 Gray scale for the border of \code{map}, ranges from 0 to 1. It is white with \code{border.gray=1}, and black with \code{border.gray=0}. The defalt scale is 0.9.
@@ -85,7 +92,8 @@ Other auguments past to \link{plot} function
 }
 
 \value{
-Produces an image map.  If the base map is in \code{readShapePoly} format a scale bar is included.  The scale bar assumes that the X and Y coordinates are provided in meters.      
+Produces an image map.  If the base map is in \code{readOGR} format a scale bar is included, showing whatever measurement units are recorded in the shapefile.  If the 
+units are missing from the shapefile conversion they are assumed to be meters.   
 }
 
 \author{
@@ -104,7 +112,14 @@ Send bug reports to \email{sbartell@uci.edu}.
 data(MAdata)
 data(MAmap)
 obj <- list(grid=data.frame(MAdata$Xcoord,MAdata$Ycoord),fit=MAdata$Mercury)
-colormap(obj,MAmap,legend.name = "mercury")
+colormap(obj, MAmap, legend.name = "mercury")
+
+# map the same data using a divergent color palette anchored to the median
+if (require(colorspace)) {
+  newpal <- diverge_hsv(201)   # from the colorspace library
+  colormap(obj, MAmap, legend.name = "mercury", col.seq = newpal, 
+	legend.add.line=median(obj$fit))
+  }
 }
 
 \keyword{hplot}

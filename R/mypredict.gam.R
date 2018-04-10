@@ -1,16 +1,32 @@
-mypredict.gam = function(object,newdata,se.fit=FALSE,type=c("all","spatial"),reference="median",level=0.05,verbose=FALSE)
+#***********************************************************************************
+#
+# Prediction for GAM Fits
+# Copyright (C) 2016, The University of California, Irvine
+#
+# This library is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this library??? if not, <http://www.gnu.org/licenses/>.
+#
+#*******************************************************************************
+mypredict.gam <- function(object, newdata, se.fit=FALSE, type=c("all","spatial"), reference="median",
+                          level=0.05, verbose=FALSE)
 {
   type = type[1]
   if(all(is.na(match(type,c("spatial","all"))))) 
     stop("type should be either 'spatial' or 'all'")
-  ####### check whether newdata has geolocation variables ##################
+  
+  ## Check whether newdata has geolocation variables 
   X.names = names(object$data)
   coords.name = colnames(object$smooth.frame[[1]])
-#  X.names = names(object$coefficients)[-1]
-#  order = attr(object$terms,"specials")$lo-1
-#  X.names[order] = unlist(strsplit(X.names[order],"\\)"))[2]
-#  X.names[order+1] = unlist(strsplit(X.names[order+1],"\\)"))[2] 
-#  X = model.matrix(object)
   if(missing(newdata)) 
     newdata = object$data    
   else{
@@ -22,7 +38,8 @@ mypredict.gam = function(object,newdata,se.fit=FALSE,type=c("all","spatial"),ref
   }
   terms = terms(object)
   tt = delete.response(terms)
-  ################ check reference type ####################
+  
+  ## Check reference type
   if(!is.element(reference[1],c("none","median","mean"))){
     ref.name = names(reference)
     if(type=="spatial"){
@@ -44,7 +61,7 @@ mypredict.gam = function(object,newdata,se.fit=FALSE,type=c("all","spatial"),ref
     }
   }
   
-  ##### fill in newdata#######################
+  ## Fill in newdata
   N.new = dim(newdata)[1]
   og.new = dim(newdata)[2]
   factor.name = names(object$xlevels)
@@ -65,20 +82,23 @@ mypredict.gam = function(object,newdata,se.fit=FALSE,type=c("all","spatial"),ref
         if(is.numeric(object$data[1,i]))
           newdata[,i] = rep(median(object$data[, i]),N.new)
     }
-    if(type=="all"&verbose) cat("GAM predictions will use median values at all grid points 
-                                for variables not included in newdata\n")
+    if(type=="all" & verbose) cat("GAM predictions will use median values at all grid points 
+       for variables not included in newdata\n")
   }
   mf.new = model.frame(tt,newdata,xlev=object$xlevels)
   newdata.matrix = model.matrix(tt, mf.new)
-  ### offsets#################################
+  
+  ### offsets
   offset = rep(0, nrow(newdata))
-  if (!is.null(off.num <- attr(tt, "offset"))) 
-    for (i in off.num) offset = offset + eval(attr(tt, 
+  if(type == 'spatial'){
+     if (!is.null(off.num <- attr(tt, "offset"))) 
+        for (i in off.num) offset = offset + eval(attr(tt, 
                                                     "variables")[[i + 1]], newdata)
-  if (!is.null(object$call$offset)) 
-    offset = offset + eval(object$call$offset, newdata)
-  if(!is.element(reference[1],c("none","median","mean"))) offset = c(offset,ref.offset)
-  #### make predictions#######################  
+      if (!is.null(object$call$offset)) 
+      offset = offset + eval(object$call$offset, newdata)
+     if(!is.element(reference[1],c("none","median","mean"))) offset = c(offset,ref.offset)
+  }
+  ## Make predictions  
   order = attr(tt,"specials")$lo
   coords.order = 2:3
   labels = names(mf.new)
@@ -86,7 +106,7 @@ mypredict.gam = function(object,newdata,se.fit=FALSE,type=c("all","spatial"),ref
   if(order>1)
     for (i in 1:(order-1)){
       if(!is.null(factor.labels))
-         if(labels[i]%in%factor.labels)
+         if(labels[i] %in% factor.labels)
         coords.order = coords.order + length(object$xlevels[[labels[i]]])-2
       coords.order = coords.order + 1
     }
@@ -121,10 +141,9 @@ mypredict.gam = function(object,newdata,se.fit=FALSE,type=c("all","spatial"),ref
   pred = pred[1:N.new]
   
   
-  rslt = list(pred=pred-ref,reference=ref,reference.type=reference,predict.type = predict)
+  rslt = list(pred=pred-ref,reference=ref,reference.type=reference,predict.type = type)
   if(!se.fit) return(rslt)
-  ######## refit #############################################################
-  # new code to obtain offset from model fit, and add median value to newdatas 
+  ## Refit 
   Y = object$y
   X = model.matrix(object)
   X.offset = object$offset  
@@ -161,6 +180,7 @@ mypredict.gam = function(object,newdata,se.fit=FALSE,type=c("all","spatial"),ref
     residuals = Z
     fit = list(fitted.values=rep(0,N),coefficients=0)
     s = rep(0,N)
+    ## Backfitting starts
     for (j in 1:40){
       deltaf = 0
       R = residuals + fit$fitted.values 
@@ -175,26 +195,31 @@ mypredict.gam = function(object,newdata,se.fit=FALSE,type=c("all","spatial"),ref
       RATIO = sqrt(deltaf/sum(w * sum(s)^2))
       if (RATIO <= 1e-5) break;
     }
+    ## Backfitting ends
     eta = Z-residuals
     mu = linkinv(eta)
     L.new = sum(dev.resids(Y, mu, w))
     if(abs(L.old - L.new)/(L.old + 0.1) <=1e-6) break;
     L.old = L.new
   }
-  if (i==40) warning("mypredict.gam did not converge for se.fit=TRUE; predictions may not be reliable.")
-  #rslt0 = fit;
-  #rslt0$fitted.values=eta; rslt0$residuals=residuals;
-  #rslt0$X=X; rslt0$span=span; rslt0$Y=Y; rslt0$family=family
-  #class(rslt0)=c("lm","glm")
+  if (i==40) 
+    warning("mypredict.gam did not converge for se.fit=TRUE; predictions may not be reliable.")
   
-  
+  ### Prediction with confidence intervals
   pred.s = predict(smooth.fit,data.frame(XX=newdata.matrix[,coords.order[1]],XY=newdata.matrix[,coords.order[2]]),se=TRUE)
-  rslt$residual.scale = predict(fit,se.fit=TRUE)$residual.scale
+  if (object$family$family %in% c("poisson", "binomial")){ 
+    dispersion <- 1
+  }else{
+    if (any(fit$weights == 0)) 
+      warning("observations with zero weight not used for calculating dispersion")
+    dispersion <- sum((fit$weights * fit$residuals^2)[fit$weights > 0])/fit$df.residual
+  }
+  rslt$residual.scale <- as.vector(sqrt(dispersion))
   cov.mat = vcov(fit)[pred.index,pred.index]
   if(type=="all")
     csdata = newdata.matrix
   else
-    csdata = newdata.matrix - as.matrix(rep(1,nrow(newdata.matrix)))%*%apply(X[,pred.index],2,mean)
+    csdata = newdata.matrix[,pred.index] - as.matrix(rep(1,nrow(newdata.matrix)))%*%apply(X[,pred.index],2,mean)
   var.l = rowSums((csdata%*%cov.mat)*csdata)
   sde = sqrt(var.l + rslt$residual.scale^2*pred.s$se.fit^2)
   rslt$conf.low = rslt$pred + qnorm(level/2)*sde; rslt$conf.high=rslt$pred+qnorm(1-level/2)*sde
@@ -202,3 +227,4 @@ mypredict.gam = function(object,newdata,se.fit=FALSE,type=c("all","spatial"),ref
   rslt$level = level
   return(rslt)
 }
+

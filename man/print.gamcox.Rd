@@ -1,7 +1,7 @@
 \name{print.gamcox}
 \alias{print.gamcox}
 \title{
-Print gamcox Objects
+Print the \code{\link{gamcox}} Object
 }
 \description{
 This function displays information about a gamcox object produced by \code{\link{gamcox}}.

@@ -1,85 +1,88 @@
 \name{plot.modgam}
 \alias{plot.modgam}
 \title{
-Maps Predicted Values and Clusters for modgam Objects
+Maps Predicted Values and Clusters for \code{\link{modgam}} Objects
 }
 \description{
 Displays a color image map, including a legend, scale bar, and optional North arrow, showing crude or adjusted odds ratios (or linear predictors) for a grid of points.  Irregular grids are allowed.  Also draws contour lines for regions of signficantly increased or decreased values of the outcome variable ("clusters"), if permutation ranks are provided.  Designed to display \code{modgam} objects but can be used with other model results if the modgamobj list contains the correct elements.      
 }
 \usage{
-\method{plot}{modgam}(x, map = NULL, exp = F, add = F, intervals=T, mapmin = NULL, 
-       mapmax = NULL, border.gray = 0.3,
+\method{plot}{modgam}(x, map = NULL, exp = FALSE, add = FALSE, intervals=TRUE, 
+       mapmin = NULL, mapmax = NULL, col.seq = diverge_hsv(201), border.gray = 0.3,
        contours=c("none","response","permrank","interval"),
        contours.drawlabels=FALSE, contours.lty=1, contours.lwd=1, 
-       contours.levels, contours.labcex=0.7, arrow=T, axes=F, ptsize=0.9,
+       contours.levels, contours.labcex=0.7, arrow=TRUE, axes=FALSE, ptsize=0.9,
        alpha=0.05, mai, legend.name = "predicted values", legend.cex=1, \dots)
 }
 \arguments{
   \item{x}{
-(Required) An object of class \code{modgam}, usually returned by the \code{modgam} function.  
+(required) an object of class \code{modgam}, usually returned by the \code{modgam} function.  
 }
   \item{map}{
-Can be used to map predicted values on a base map from the \code{map} function in the \pkg{maps} package, or on a base map produced by the \code{readShapePoly} function in \pkg{maptools} package.  ReadShapePoly reads maps from external files in the ESRI shapefile format.  \code{map=NULL} produces a color image without any base map.
+can be used to map predicted values on a base map from the \code{map} function in the \pkg{maps} package, or on a base map produced by the \code{readShapePoly} function in \pkg{maptools} package.  ReadShapePoly reads maps from external files in the ESRI shapefile format.  \code{map=NULL} produces a color image without any base map.
 }
   \item{exp}{
-If \code{exp=T}, \code{fit} will be displayed in exponential scale.  
+if \code{exp=T}, \code{fit} will be displayed in exponential scale.  
 }
   \item{add}{
-Use \code{add=T} to add the color map to an existing plot.  This will often result in loss of the legend and scale, which are added outside of the normal
+use \code{add=T} to add the color map to an existing plot.  This will often result in loss of the legend and scale, which are added outside of the normal
     map boundaries.  \code{add} is ignored when a map is provided using the 
     \code{map} argument.
 }
   \item{intervals}{
-If the \code{modgam} object contains confidence intervals, the lower and higher intervals will be plotted if \code{intervals=T}  
+if the \code{modgam} object contains confidence intervals, the lower and higher intervals will be plotted if \code{intervals=T}.  
 }
   \item{mapmin}{
-The minimum value for the color scale legend. 
+the minimum value for the color scale legend. 
 }
   \item{mapmax}{
-The maximum value for the color scale legend. 
+the maximum value for the color scale legend. 
+}
+  \item{col.seq}{
+The color sequence (palette) used to display the predicted values on the map.
 }
   \item{border.gray}{
-Gray scale for the border of \code{map}, ranges from 0 to 1. It is white with \code{border.gray=1}, and black with \code{border.gray=0}. The defalt scale is 0.3.
+gray scale for the border of \code{map}, ranges from 0 to 1. It is white with \code{border.gray=1}, and black with \code{border.gray=0}. The defalt scale is 0.3.
 }
   \item{contours}{
-Use \code{contours="response"} to add contour lines for the predicted response, for example to draw isoboles for mixtures of exposures.  Use \code{contours="permrank"} to add contour lines for pointwise p-values computed from the permutation ranks, at \code{alpha/2} and \code{(1-alpha)/2}. use \code{contours = "intervals"} to add contour lines for areas where the confidence intervals do not include 0. The default is "none" which produces no contour lines.
+use \code{contours="response"} to add contour lines for the predicted response, for example to draw isoboles for mixtures of exposures.  Use \code{contours="permrank"} to add contour lines for pointwise p-values computed from the permutation ranks, at \code{alpha/2} and \code{(1-alpha)/2}. use \code{contours = "intervals"} to add contour lines for areas where the confidence intervals do not include 0. The default is "none" which produces no contour lines.
 }
   \item{contours.drawlabels}{
-Use \code{contours.drawlabels = TRUE} add labels on contour lines.   
+use \code{contours.drawlabels = TRUE} add labels on contour lines.   
 }
   \item{contours.lty}{
-The line type for contour lines
+the line type for contour lines.
 }
   \item{contours.lwd}{
-The width for contour lines.
+the width for contour lines.
 } 
   \item{contours.levels}{
-The levels for contour lines. When \code{exp=T}, the levels will also be used in an exponential scale.
+the levels for contour lines. When \code{exp=T}, the levels will also be used in an exponential scale.
 } 
   \item{contours.labcex}{
 cex for contour labelling. This is an absolute size, not a multiple of \code{par("cex")} 
 }
   \item{arrow}{
-Use arrow=T to add a North arrow to the map.  	
+use \code{arrow=T} to add a North arrow to the map.  	
 }
   \item{axes}{
-Use axes=T to add axes to the map (useful for chemical mixture isoboles).
+use \code{axes=T} to add axes to the map (useful for chemical mixture isoboles).
 }
   \item{ptsize}{
-The size of the points used to fill in colors on the map.  Increase to remove white space inside the map or decrease to remove color outside the map boundaries.  NOTE: white space can also be eliminated by increasing the grid size in \code{predgrid}, which is often preferable as it results in a higher resolution map.   
+the size of the points used to fill in colors on the map.  Increase to remove white space inside the map or decrease to remove color outside the map boundaries.  NOTE: white space can also be eliminated by increasing the grid size in \code{predgrid}, which is often preferable as it results in a higher resolution map.   
 }
   \item{alpha}{
-The nominal pointwise type I error rate; only used when \code{contours="permrank"}.  
+the nominal pointwise type I error rate; only used when \code{contours="permrank"}.  
 }
   \item{mai}{
-The margins of the plot. Details see \link{par},}
+the margins of the plot. Details see \link{par}.}
   \item{legend.name}{
-The name of displayed for the legend bar.}
+the name of displayed for the legend bar.}
   \item{legend.cex}{
-A numerical value giving the amount by which legend text should be magnified relative to the default.  
+a numerical value giving the amount by which legend text should be magnified relative to the default.  
 }
   \item{...}{
-Other arguments to be passed to \link{colormap} function
+other arguments to be passed to \link{colormap} function.
   }
 }
 
@@ -130,7 +133,7 @@ if(require(maps) & require(mapproj) & require(PBSmapping)) {
   # Generate grid on the US map, trimmed to range of beer data
   USgrid <- predgrid(beerproj, map=USmap)						
   # Fit unadjusted model--geolocation only
-  fit2 <- modgam(data=beerproj, rgrid=USgrid, m="unadjusted", sp=0.2)	
+  fit2 <- modgam(data=beerproj, rgrid=USgrid, m="unadjusted", sp=0.05)	
   dev.new(width=7,height=5)
   plot(fit2, USmap)
   title(main="Beer Tweet Odds Ratios")	

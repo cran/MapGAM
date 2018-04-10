@@ -1,7 +1,7 @@
 \name{dls}
 \alias{dls}
 \title{
-Calculating derivatives of partial likelihood for Cox proportional hazard additive models}
+Calculating Derivatives of Partial Likelihood for Cox Proportional Hazard Additive Models}
 \description{
 Calculate the log partial likelihood and derivatives with respect to the subject log hazard ratio (compared to the baseline) for Cox proportional hazard additive model described in \code{\link{gamcox}}. Results are used to update estimates in \code{\link{gamcox}} function.
 }
@@ -19,10 +19,10 @@ a data frame containing the variables in the model. The data must be structured 
 matrix index for smooth term.
 }
   \item{eta}{
-Current estimated subject log hazard ratio compared to the baseline. 
+current estimated subject log hazard ratio compared to the baseline. 
 }
   \item{span}{
-Smoothing parameter that been used to smoothing the second derivative of the log partial likelihood.
+smoothing parameter that been used to smoothing the second derivative of the log partial likelihood.
 }
   \item{adjust}{
 \code{adjust=TRUE} means there are confounders included in the model.
@@ -41,17 +41,17 @@ For data that having tied failure times, Efron's approximation method is used to
 
 \item{deltaeta}{difference between the input \code{eta} and the new updated \code{eta}.}
 
-\item{w}{inverse of smoothed second derivatives}
+\item{w}{inverse of smoothed second derivatives.}
 
 \item{l}{
-Partial likelihood baed on input \code{eta}.
+partial likelihood baed on input \code{eta}.
 }
 }
 
 \references{
 Hastie TJ, Tibshirani RJ.  Generalized Additive Models.  (Chapman & Hall/CRC Monographs on Statistics & Applied Probability, Boca Raton, Florida, 1990). 
 
-Bristow RE, Chang J, Ziogas A, Gillen DL, Bai L, Vieira VM. Spatial Analysis of Advanced-stage Ovarian Cancer Mortality in California. American Journal of Obstetrics and Gynecology 2015, 213(1), e1-43)
+Bristow RE, Chang J, Ziogas A, Gillen DL, Bai L, Vieira VM. Spatial Analysis of Advanced-stage Ovarian Cancer Mortality in California. American Journal of Obstetrics and Gynecology 2015, 213(1), e1-43).
 }
 
 \author{
@@ -71,7 +71,7 @@ data(CAdata)
 Y = CAdata[,c("time","event")]
 X = CAdata[,c(3:5)]
 eta = coxph(Surv(time,event)~AGE,data=CAdata)$linear.predictors
-result = dls(Y,X,1:2,eta)
+result = dls(Y,X,1:2,eta,span=0.2)
 plot(eta,result$deltaeta)
 }
 }

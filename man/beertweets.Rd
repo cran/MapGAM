@@ -4,17 +4,17 @@
 \title{
 Geocoded Tweets with Beer Indicator}
 \description{
-Geocoded tweets from Twitter, with an indicator variable for any mention of beer, time stamp, and state of origin
+Geocoded tweets from Twitter, with an indicator variable for any mention of beer, time stamp, and state of origin.
 }
 \usage{data(MAmap)}
 \format{
   A data frame with 10000 observations on 5 variables:
   \describe{
-    \item{\code{beer}}{1 for tweets about beer, 0 for other tweets}
-    \item{\code{longitude}}{geocoded longitude}
-    \item{\code{latitude}}{geocoded latitude}
-    \item{\code{state}}{a factor with the name of the state}
-    \item{\code{time}}{a list of POSIXlt format dates and times for the tweets}
+    \item{\code{beer}}{1 for tweets about beer, 0 for other tweets.}
+    \item{\code{longitude}}{geocoded longitude.}
+    \item{\code{latitude}}{geocoded latitude.}
+    \item{\code{state}}{a factor with the name of the state.}
+    \item{\code{time}}{a list of POSIXlt format dates and times for the tweets.}
   }
 }
 \details{
@@ -27,7 +27,8 @@ Dr. Matthew Zook, University of Kentucky
 \url{http://www.floatingsheep.org/2012/07/church-or-beer-americans-on-twitter.html}
 }
 \examples{
-data(MAmap)
-plot(MAmap)
+data(beertweets)
+attach(beertweets)
+plot(longitude,latitude,col=beer+1)  # beer in red, non-beer in black
 }
 \keyword{datasets}

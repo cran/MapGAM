@@ -1,20 +1,29 @@
 MapGAM.version = function() cat('
-Sep 03 2016 	MapGAM version 1.0
+Apr 09 2018 	MapGAM version 1.1
   	
-Sep 3 2016	MapGAM.version.R
-Jun 21 2016	colormap.R
-Aug 7 2016	dls.R
-Jun 20 2016	gamcox.R
-Aug 7 2016	gamcox.fit.R
-Jul 21 2016	modgam.R
-Jul 21 2016	mypredict.gam.R
-Jul 21 2016	optspan.R
-Jun 14 2016	plot.modgam.R
-Jun 22 2016	predgrid.R
-Jul 21 2016	predict.gamcox.R
-Jun 8 2016	print.gamcox.R
-Aug 19 2016	print.modgam.R
-Jul 21 2016	sampcont.R
-Jul 19 2016	toformula.R
-Mar 12 2015	trimdata.R
+Dec 10 2016	AIC.modgam.R
+Apr 9 2018	MapGAM.version.R
+Dec 10 2016	coef.gamcox.R
+Dec 10 2016	coef.modgam.R
+Sep 20 2017	colormap.R
+Oct 16 2016	dls.R
+Dec 10 2016	formula.gamcox.R
+Dec 10 2016	formula.modgam.R
+Feb 6 2017	gamcox.R
+Oct 16 2016	gamcox.fit.R
+Oct 8 2017	modgam.R
+Sep 15 2017	mypredict.gam.R
+Apr 9 2018	optspan.R
+Nov 20 2016	plot.modgam.R
+Oct 16 2016	predgrid.R
+Oct 20 2016	predict.gamcox.R
+Dec 8 2016	print.gamcox.R
+Dec 8 2016	print.modgam.R
+Dec 10 2016	residuals.gamcox.R
+Dec 10 2016	residuals.modgam.R
+Oct 16 2016	sampcont.R
+Dec 10 2016	summary.gamcox.R
+Apr 9 2018	summary.modgam.R
+Sep 18 2017	toformula.R
+Oct 16 2016	trimdata.R
 ')

@@ -1,6 +1,26 @@
-gamcox<- function(formula,data,subset,weights,span=0.5,I.span=0.2,degree=1,loess.trace="exact", Maxiter=40, tol=1e-7){
-  call <- match.call()
-  #if (!missing(formula)){
+#***********************************************************************************
+#
+# Fit a Cox Additive Model with a Two-Dimensional Smooth
+# Copyright (C) 2016, The University of California, Irvine
+#
+# This library is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this library??? if not, <http://www.gnu.org/licenses/>.
+#
+#*******************************************************************************
+gamcox <- function(formula, data, subset, weights, span=0.5, I.span=0.2, degree=1, 
+                   loess.trace="exact", Maxiter=40, tol=1e-7)
+  {
+    call <- match.call()
     if (missing(data)) 
       data <- environment(formula)
     mf <- match.call()
@@ -14,10 +34,11 @@ gamcox<- function(formula,data,subset,weights,span=0.5,I.span=0.2,degree=1,loess
     mf$formula <- mt
     mf <- eval(mf, parent.frame())
     order = attr(mt,"specials")$lo
+    ## If no smooth term, then Coxph model
     if(is.null(order)){
       if(missing(weights))
       fit = coxph(formula,data[subset,])
-      else fit = coxph(formula,data,weights,subset)
+      else fit = eval(substitute(coxph(formula,data,weights,subset)))
       rslt <- fit
       rslt$additive.predictors = fit$linear.predictors
       if(!is.null(fit$coefficients)){
@@ -31,67 +52,60 @@ gamcox<- function(formula,data,subset,weights,span=0.5,I.span=0.2,degree=1,loess
       }
       class(rslt)<-"coxph"
       return(rslt)
-    }else{
-      ncols <- attr(mf[[order]],"ncols")
-      spanf = if(!missing(span)) span else NULL
-      degreef = if(!missing(degree)) degree else NULL
-      los <- attr(mt,"term.labels")[order-1]
-      los <- gsub("[[:blank:]]","",los)
-      start <- gregexpr("\\(",los)[[1]]; end <-rev(gregexpr("\\)",los)[[1]]) 
-      losub <- substr(los,start[1]+1,end[1]-1)
-      parts <- strsplit(losub,"\\([^()]*\\)(*SKIP)(*F)|\\h*,\\h*", perl=T)
-      coords.name <- parts[[1]][1:2]
-      if(is.null(dim(mf[[order]]))|dim(mf[[order]])[2]<2) stop("Two predictors must be specified in lo()")
-      if(ncols>2)
-        warning(paste("Only the first two variables", paste(coords.name,collapse=" and "),"will be used for smoothing"))
-      mf[[order]] <- mf[[order]][,1:ncols]
-      colnames(mf[[order]]) <- coords.name
-      if(length(parts[[1]])>2){
-        for(i in 3:length(parts[[1]]))
-          eval(parse(text=parts[[1]][i]))
-      }
-      if(!is.null(spanf))if(spanf!=span) 
-        warning(paste("span size of",span,"in the formula will be used instead of value of argument sp=", sp))
-      if(!is.null(span)) sp = span
-      if(!is.null(degreef))if(degreef!=degree)
-        warning(paste("degree=", degree,"in the formula will be used instead of value of argument degree=", degreef))
+    }else{  ### else Cox additive model
+        ncols <- attr(mf[[order]],"ncols")
+        
+        ## extract coords name, span and degree
+        spanf = if(!missing(span)) span else NULL
+        degreef = if(!missing(degree)) degree else NULL
+        los <- attr(mt,"term.labels")[order-1]
+        los <- gsub("[[:blank:]]","",los)
+        start <- gregexpr("\\(",los)[[1]]; end <-rev(gregexpr("\\)",los)[[1]]) 
+        losub <- substr(los,start[1]+1,end[1]-1)
+        parts <- strsplit(losub,"\\([^()]*\\)(*SKIP)(*F)|\\h*,\\h*", perl=T)
+        coords.name <- parts[[1]][1:2]
+        if(is.null(dim(mf[[order]]))|dim(mf[[order]])[2]<2) 
+          stop("Two predictors must be specified in lo()")
+        if(ncols>2)
+          warning(paste("Only the first two variables", paste(coords.name,collapse=" and "),"will be used for smoothing"))
+        mf[[order]] <- mf[[order]][,1:ncols]
+        colnames(mf[[order]]) <- coords.name
+        if(length(parts[[1]])>2){
+          for(i in 3:length(parts[[1]]))
+            eval(parse(text=parts[[1]][i]))
+        }
+        if(!is.null(spanf))if(spanf!=span) 
+          warning(paste("span size of",span,"in the formula will be used instead of value of argument sp=", sp))
+        if(!is.null(span)) sp = span
+        if(!is.null(degreef))if(degreef!=degree)
+          warning(paste("degree=", degree,"in the formula will be used instead of value of argument degree=", degreef))
       
-      Y = list(time=mf[[1]][,1],event = mf[[1]][,2])
-      X.matrix <- if(!is.empty.model(mt))model.matrix(mt,mf,contrasts)[,-1]
-#      X = as.matrix(cbind(mf[[order]],X.matrix[,-grep("lo\\([[:print:]]+\\)",colnames(X.matrix))]))
-      smooth.frame = mf[[order]]
-#      colnames(X)[-c(1,2)] <- colnames(as.matrix(mf))[-c(1,2,order+1,order+2)]
+        Y = list(time=mf[[1]][,1],event = mf[[1]][,2])
+        X.matrix <- if(!is.empty.model(mt))model.matrix(mt,mf,contrasts)[,-1]
+        smooth.frame = mf[[order]]
+      }
+    if(!missing(weights)){
+      if(any(weights<0)) 
+        stop("Negative weights not allowed")
+      weights = weights[subset]
     }
-#  }else{
-#    if(min(dim(data))<4)
-#      stop("data must include at least 4 columns")
-#    Y = list(time=data[subset,1],event=data[subset,2])
-    #X = as.matrix(data[subset,-c(1,2)])
-#    X = model.matrix(as.formula(paste("~",paste(names(data)[-c(1,2)],collapse="+"),"-1")),data[subset,],contrasts)
-#  }
-  if(!missing(weights)){
-    if(any(weights<0)) stop("Negative weights not allowed")
-    weights = weights[subset]
-  }
-  fit = gamcox.fit(Y,X.matrix,smooth.frame,weights,span,I.span,degree,loess.trace, Maxiter, tol)
-  rslt <- fit
-#  if(!missing(formula)){
+    fit = gamcox.fit(Y,X.matrix,smooth.frame,weights,span,I.span,degree,loess.trace, Maxiter, tol)
+    rslt <- fit
     rslt$formula=formula
     rslt$terms=mt
-#  }
-  rslt$xlevels = .getXlevels(mt,mf)
-  rslt$data <- data
-  rslt$span <- span
-  rslt$I.span <- I.span
-  rslt$Maxiter <- Maxiter
-  rslt$tol<- tol
-  rslt$degree <- degree
-  rslt$loess.trace = loess.trace
-  rslt$X=X.matrix
-  rslt$Y = Y
-  rslt$smooth.frame = mf[[order]]
-  rslt$weights = if(missing(weights))NULL else weights
-  rslt$call <- call
-  class(rslt)<-"gamcox"
-  rslt
-}
+    rslt$xlevels = .getXlevels(mt,mf)
+    rslt$data <- data
+    rslt$span <- span
+    rslt$I.span <- I.span
+    rslt$Maxiter <- Maxiter
+    rslt$tol<- tol
+    rslt$degree <- degree
+    rslt$loess.trace = loess.trace
+    rslt$X=X.matrix
+    rslt$Y = Y
+    rslt$smooth.frame = mf[[order]]
+    rslt$weights = if(missing(weights))NULL else weights
+    rslt$call <- call
+    class(rslt)<-"gamcox"
+    rslt
+  }

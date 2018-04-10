@@ -1,7 +1,7 @@
 \name{predict.gamcox}
 \alias{predict.gamcox}
 \title{
-Prediction method for GAMCOX fits}
+Prediction Method for \code{gamcox} Fits}
 \description{
 Obtains spatial effects predictions and optionally estimates standard errors and confidence intervals of those predictions from a fitted Cox proportional hazard additive model object.}
 \usage{
@@ -14,33 +14,33 @@ Obtains spatial effects predictions and optionally estimates standard errors and
 a fitted \code{gamcox} object.
 }
   \item{newdata}{
-A data frame containing the values at which predictions are required. This argument can be missing, in which case predictions are made at the same values used to compute the object. A comprehensive effect (hazard ratio) of the covariates included in \code{newdata} will be predicted.
+a data frame containing the values at which predictions are required. This argument can be missing, in which case predictions are made at the same values used to compute the object. A comprehensive effect (hazard ratio) of the covariates included in \code{newdata} will be predicted.
 }
   \item{se.fit}{
-if TRUE, pointwise standard errors and confidence intervals are computed along with the predictions
+if \code{TRUE}, pointwise standard errors and confidence intervals are computed along with the predictions.
 }
   \item{type}{
-Use \code{type="spatial"}(default) to estimate spatial effect, and use \code{type="all"} to estimate the effect of all covariates included in the model.  
+use \code{type="spatial"}(default) to estimate spatial effect, and use \code{type="all"} to estimate the effect of all covariates included in the model.  
 }
   \item{reference}{
-Type of reference for the estimated effect. If \code{reference = "median"},  the output will be the estimated hazard ratio (or log-ratio) compared to the median effect. If \code{reference = "mean"},the output will be the estimated hazard ratio (or log-ratio) compared to the mean effect.If \code{reference} is a data frame indicating a specific geolocation, the out put will be the estimated hazard ratio (or log ratio) compared to the hazard of the geolocation specified by \code{reference}.
+the type of reference for the estimated effect. If \code{reference = "median"},  the output will be the estimated hazard ratio (or log-ratio) compared to the median effect. If \code{reference = "mean"},the output will be the estimated hazard ratio (or log-ratio) compared to the mean effect.If \code{reference} is a data frame indicating a specific geolocation, the out put will be the estimated hazard ratio (or log ratio) compared to the hazard of the geolocation specified by \code{reference}.
 } 
-  \item{level}{Confidence level for condifence bands}
+  \item{level}{the confidence level for condifence bands.}
    \item{verbose}{
-Logical value indicating whether to print filling values for newdata. The default is \code{verbose = FALSE}.      
+a logical value indicating whether to print filling values for newdata. The default is \code{verbose = FALSE}.      
 }
-  \item{\dots}{Extra arguments for S3 generic, ignored by \code{predict.gamcox}}   
+  \item{\dots}{extra arguments for S3 generic, ignored by \code{predict.gamcox}.}   
 }
 
 
 \value{
-\item{pred}{Estimated log hazard ratio compare to the effect specified by \code{reference}}
+\item{pred}{the estimated log hazards ratio compared to the effect specified by \code{reference}.}
 
 \item{se}{
-Standard errors along with the predictions.
+the standard errors along with the predictions.
 }
-\item{conf.low}{The lower bounds for pointwise (1-\code{level}) confidence intervals.}
-\item{conf.high}{The higher bounds for pointwise (1-\code{level}) confidence intervals.}
+\item{conf.low}{the lower bounds for pointwise (1-\code{level}) confidence intervals.}
+\item{conf.high}{the higher bounds for pointwise (1-\code{level}) confidence intervals.}
 }
 
 \references{

@@ -1,7 +1,7 @@
 \name{print.modgam}
 \alias{print.modgam}
 \title{
-Print modgam Objects}
+Print the \code{\link{modgam}} Object}
 \description{
 This function displays information about a modgam object produced by \code{\link{modgam}}.
 }
@@ -13,7 +13,7 @@ This function displays information about a modgam object produced by \code{\link
 a modgam object.
 }
   \item{\dots}{
-extra arguments for S3 generic, ignored by \code{print.modgam}   	
+extra arguments for S3 generic, ignored by \code{print.modgam}.   	
 }
 }
 \author{

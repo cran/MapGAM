@@ -11,22 +11,22 @@ trimdata(rdata, map, Xcol=2, Ycol=3, rectangle=F, buffer=0.05)
 }
 \arguments{
   \item{rdata}{
-Data set (required).  If \code{rdata} has only 2 columns then they are assumed to be the X and Y coordinates, in that order.  If \code{rdata} has more than 2 columns then identify the positions of the X and Y coordinates with \code{Xcol} and \code{Ycol}, respectively.
+the data set (required).  If \code{rdata} has only 2 columns then they are assumed to be the X and Y coordinates, in that order.  If \code{rdata} has more than 2 columns then identify the positions of the X and Y coordinates with \code{Xcol} and \code{Ycol}, respectively.
 }
   \item{map}{
-A map for clipping the grid, provided in a recognized format.  Supported classes include "map", the format produced by the maps package, and "SpatialPolygonsDataFrame", which can be produced from an ESRI shapefile using the readShapePoly function in the maptools package.
+a map for clipping the grid, provided in a recognized format.  Supported classes include \code{"map"}, the format produced by the maps package, and \code{"SpatialPolygonsDataFrame"}, which can be produced from an ESRI shapefile using the \code{readOGR} function in the \code{rgdal} package.
 }
   \item{Xcol}{
-The column number of rdata for the X coordinates of geolocation.  Only used if rdata has >2 columns.
+the column number of rdata for the X coordinates of geolocation.  Only used if rdata has >2 columns.
   }
   \item{Ycol}{
-The column number of rdata for the Y coordinates of geolocation.  Only used if rdata has >2 columns.
+the column number of rdata for the Y coordinates of geolocation.  Only used if rdata has >2 columns.
   }
   \item{rectangle}{
- If \code{rectangle=FALSE} (default), only data with geolocations strictly within the map boundaries are retained.  If \code{rectangle=TRUE}, only data with geolocations within a rectangular boundary are retained.  The rectangular boundary coordinates are determined using the ranges of X and Y coordinates for the map, along with an optional buffer.   
+ if \code{rectangle=FALSE} (default), only data with geolocations strictly within the map boundaries are retained.  If \code{rectangle=TRUE}, only data with geolocations within a rectangular boundary are retained.  The rectangular boundary coordinates are determined using the ranges of X and Y coordinates for the map, along with an optional buffer.   
 }
   \item{buffer}{
-A fraction of the map range to add to either side of the rectangular boundary before trimming the data (default 5\%).  The buffer argument is ignored if \code{rectangle=FALSE}.  If a vector of length 2 is supplied, the first value as the buffer fraction for the X coordinate range and the second value is used as the buffer fraction for the Y coordinate range. 
+a fraction of the map range to add to either side of the rectangular boundary before trimming the data (default 5\%).  The buffer argument is ignored if \code{rectangle=FALSE}.  If a vector of length 2 is supplied, the first value as the buffer fraction for the X coordinate range and the second value is used as the buffer fraction for the Y coordinate range. 
 }
 }
 \details{

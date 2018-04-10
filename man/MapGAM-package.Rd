@@ -12,8 +12,8 @@ Contains functions for estimating and mapping hazard ratios, odds ratios, rate r
 \tabular{ll}{
 Package: \tab MapGAM\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2016-09-03\cr
+Version: \tab 1.1\cr
+Date: \tab 2018-04-09\cr
 License: \tab GPL-3\cr
 }
 Typical spatial applications will start with the predgrid function to create a regular grid of points within the study area, with optional map boundaries (e.g., a country, state, or regional map).  Crude or adjusted odds ratios, hazard ratios, or continuous outcomes are then estimated at each grid point using the modgam function to smooth by geolocation.  Finally, the predicted values (and optionally, "clusters"--areas of signficantly increased or decreased values determined via permutation tests or confidence intervals) are plotted using the plot or colormap functions.  Most users will use the plot function to create maps from modgam objects, but colormap is provided for backwards compatibility as well as for creating maps from models fit using functions other than modgam.  The trimdata and sampcont functions can be used to restrict data to those within map boundaries and to conduct simple or spatiotemporal stratified sampling from eligible controls.  The optspan function can be used to find an optimal span size for the LOESS smoother used by the modgam function; it is automatically used within the modgam function when the span size is not provided by the user.  These functions can also be applied to non-spatial data when two-dimensional smoothing is of interest, such as investigation of the effects of a mixture of two chemicals.}

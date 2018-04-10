@@ -1,6 +1,6 @@
 #***********************************************************************************
 #
-# Print gamcox Object
+# Summarize the gamcox Object
 # Copyright (C) 2016, The University of California, Irvine
 #
 # This library is free software: you can redistribute it and/or modify
@@ -17,8 +17,8 @@
 # along with this library??? if not, <http://www.gnu.org/licenses/>.
 #
 #*******************************************************************************
-print.gamcox <- function(x,...){
-  fit = x
+summary.gamcox <- function(object,...){
+  fit = object
   cat("Call:\n")
   print(fit$call)
   cat("\nModel:\n")
@@ -34,4 +34,10 @@ print.gamcox <- function(x,...){
   }
   cat("\nCoefficients:\n")
   print(fit$coefficients)
+  
+  cat("\nSummary of spatial effect(centered at median):\n")
+  sp = as.vector(fit$smooth+fit$smooth.frame%*%fit$coefficients[grep("lo\\([[:print:]]+\\)",names(fit$coefficients))])
+  print(summary(sp-median(sp)))
+  cat("\nDegrees of Residual Freedom:",fit$df.residual,"\n")
+  cat("Residual Deviance:", fit$deviance,"\n")
 }

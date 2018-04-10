@@ -1,6 +1,6 @@
 #***********************************************************************************
 #
-# Print gamcox Object
+# AIC of the modgam object
 # Copyright (C) 2016, The University of California, Irvine
 #
 # This library is free software: you can redistribute it and/or modify
@@ -17,21 +17,6 @@
 # along with this library??? if not, <http://www.gnu.org/licenses/>.
 #
 #*******************************************************************************
-print.gamcox <- function(x,...){
-  fit = x
-  cat("Call:\n")
-  print(fit$call)
-  cat("\nModel:\n")
-  if(!is.null(fit$formula)){
-    print(fit$formula,showEnv = F)
-  }else{
-    data = as.matrix(fit$data)
-    response.name=colnames(data)[1:2]
-    other.name=colnames(fit$X)
-    coords = paste("lo(",other.name[1],",",other.name[2],")",sep="")
-    covariates = paste(other.name[-c(1,2)],collapse="+")
-    print(as.formula(paste("Surv(",response.name[1],",",response.name[2],")~",covariates,"+",coords)),showEnv = F)
-  }
-  cat("\nCoefficients:\n")
-  print(fit$coefficients)
+AIC.modgam <- function(object,...){
+  object$gamobj$aic
 }
