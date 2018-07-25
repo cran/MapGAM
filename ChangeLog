@@ -1,3 +1,11 @@
+2018-07-24 Scott Bartell
+  * DESCRIPTION (Version): New version is 1.2
+
+  * R/colormap.R:  fixed error with double printing of y axis label when axes=TRUE,
+  and added a new argument "anchor", with a default of anchor=F (the original method).  
+  Anchoring the color scale bar to the referent value is now only performed when 
+  legend.add.line is specified and anchor=T.
+
 2018-04-09 Lu Bai and Scott Bartell
   * DESCRIPTION (Version): New version is 1.1
 

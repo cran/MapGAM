@@ -8,7 +8,7 @@ Displays a color image map, including a legend, scale bar, and optional North ar
 }
 \usage{
 colormap(obj, map=NULL, exp=FALSE, add=FALSE,  mapmin=NULL, mapmax=NULL, 
-         col.seq=rev(rainbow(201,start=0,end=0.66)),
+         col.seq=rev(rainbow(201,start=0,end=0.66)), anchor=FALSE,
          border.gray = 0.3, contours="none", 
          contours.drawlabels=FALSE, contours.lty=1,
          contours.lwd=1, contours.levels, contours.labcex=0.7, 
@@ -32,15 +32,18 @@ Use \code{add=T} to add the color map to an existing plot.  This will often resu
     \code{map} argument.
 }
   \item{mapmin}{
-The minimum value for the color scale legend. 
+The minimum value for the color scale legend.  When not specified, it will be set to the minimum predicted value. 
 }
   \item{mapmax}{
-The maximum value for the color scale legend.
+The maximum value for the color scale legend.  When not specified, it will be set to the maximum predicted value. 
 }
   \item{col.seq}{
 The color sequence (palette) used to display the predicted values on the map.  The default is a 
 rainbow palette, but divergent or sequential palettes may be better for some applications.  See the
 colorspace library and the example below for other options.      
+}
+  \item{anchor}{
+Use \code{anchor=TRUE} to center the color palette on \code{legend.add.line}.  When \code{anchor=FALSE} (the default) or when \code{legend.add.line} is not specified, the color palette will be centered halfway between mapmin and mapmax.  \code{anchor=TRUE} is recommended when using a divergent palette.          	
 }
   \item{border.gray}{
 Gray scale for the border of \code{map}, ranges from 0 to 1. It is white with \code{border.gray=1}, and black with \code{border.gray=0}. The defalt scale is 0.9.
@@ -118,7 +121,7 @@ colormap(obj, MAmap, legend.name = "mercury")
 if (require(colorspace)) {
   newpal <- diverge_hsv(201)   # from the colorspace library
   colormap(obj, MAmap, legend.name = "mercury", col.seq = newpal, 
-	legend.add.line=median(obj$fit))
+	legend.add.line=round(median(obj$fit),2), anchor = TRUE)
   }
 }
 

@@ -1,11 +1,11 @@
 MapGAM.version = function() cat('
-Apr 09 2018 	MapGAM version 1.1
+Jul 24 2018 	MapGAM version 1.2
   	
 Dec 10 2016	AIC.modgam.R
-Apr 9 2018	MapGAM.version.R
+Jul 24 2018	MapGAM.version.R
 Dec 10 2016	coef.gamcox.R
 Dec 10 2016	coef.modgam.R
-Sep 20 2017	colormap.R
+Jul 24 2018	colormap.R
 Oct 16 2016	dls.R
 Dec 10 2016	formula.gamcox.R
 Dec 10 2016	formula.modgam.R

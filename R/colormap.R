@@ -1,7 +1,7 @@
 #******************************************************************************
 #
 # Maps Predicted Values and Clusters on a Two-Dimentional Map
-# Copyright (C) 2017, The University of California, Irvine
+# Copyright (C) 2016, The University of California, Irvine
 #
 # This library is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 #*******************************************************************************
 
 colormap <- function(obj, map=NULL, exp=FALSE, add=FALSE,  mapmin=NULL, mapmax=NULL,
-                     col.seq=rev(rainbow(201,start=0,end=0.66)),
+                     col.seq=rev(rainbow(201,start=0,end=0.66)), anchor=FALSE,
 					 border.gray=0.3, contours="none", contours.drawlabels=FALSE, contours.lty=1, 
 					 contours.lwd=1, contours.levels, contours.labcex=0.7, interval.exclude=0, 
 					 arrow=TRUE, axes=FALSE, ptsize=0.9, mai, legend.name="predicted values", 
@@ -52,7 +52,7 @@ colormap <- function(obj, map=NULL, exp=FALSE, add=FALSE,  mapmin=NULL, mapmax=N
 	  ## Color distribution
 	  col.len = length(col.seq)
 #	  col.seq = rev(rainbow(2252,start=0,end=0.66))    # original RGB palette
-      if(!missing(legend.add.line)){ 	# anchor palette on legend.add.line	    
+      if(!missing(legend.add.line) & anchor){ 	    
         skip = FALSE
 	    if(legend.add.line < mapmin | legend.add.line > mapmax) {
 	   	  warning(paste("legend.add.line =",legend.add.line,
@@ -106,7 +106,7 @@ colormap <- function(obj, map=NULL, exp=FALSE, add=FALSE,  mapmin=NULL, mapmax=N
   	  mmai = if(missing(mai))c(1,0.82,1,0.5) else mai
 	    par(mai=mmai)
 	  	plot(obj$grid,col=col.seq[grad],pch=15,cex=ptsize,type="p",
-		  	xlab="", xaxt="n")
+		  	xlab="", xaxt="n", ylab="")
 		  axis(3)
 		  mtext(names(obj$grid[1]), side=3, line=2)
 		  mtext(names(obj$grid[2]), side=2, line=2)
