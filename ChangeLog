@@ -1,3 +1,21 @@
+2019-01-21 Scott Bartell
+  * DESCRIPTION (Version): New version is 1.2-4
+
+  * R/plot.modgam.R:  Fixed error in plot.modgam function associated with new "anchor"
+  argument, now implemented in both plot.modgam and colormap. 
+   
+  * R/gamcox.fit.R:  Truncated step sizes (deltaeta) at -3 and 3 in order to avoid 
+  potential problems. Also added warning message when final model deviance is higher 
+  than deviance for a model using the same linear predictors and no smooth, and error
+  check for infinite values in eta.      
+
+  * R/optspan and R/gamcox:  Fixed same error in both functions--had sometimes 
+  failed to identify the variables in the two-dimesional smooth, occasionally
+  resulting in fatal error messages. 
+
+  * R/gamcox:  replaced identical with all.equal to avoid spurious warning/error 
+  when comparing two real values (span and spanf).      
+
 2018-07-24 Scott Bartell
   * DESCRIPTION (Version): New version is 1.2
 

@@ -18,7 +18,7 @@
 #
 #*******************************************************************************
 plot.modgam <- function(x, map = NULL, exp = FALSE, add = FALSE, intervals=TRUE, mapmin = NULL, 
-                        mapmax = NULL, col.seq = diverge_hsv(201), border.gray = 0.3, 
+                        mapmax = NULL, col.seq = diverge_hsv(201), anchor=FALSE, border.gray = 0.3, 
                         contours=c("none","response","permrank","interval"), 
                         contours.drawlabels=FALSE, contours.lty=1, contours.lwd=1, contours.levels, 
                         contours.labcex=0.7, arrow=TRUE, axes=FALSE, ptsize=0.9, alpha=0.05, 
@@ -80,22 +80,22 @@ plot.modgam <- function(x, map = NULL, exp = FALSE, add = FALSE, intervals=TRUE,
     tempobj2 = modgamobj
     tempobj2$fit = modgamobj$conf.high; tempobj2$exp.fit = modgamobj$exp.conf.high
     par(mfrow = c(1,3))
-    colormap(tempobj1, map, exp, add, mapmin, mapmax, col.seq, border.gray,contours, contours.drawlabels, contours.lty,
+    colormap(tempobj1, map, exp, add, mapmin, mapmax, col.seq, anchor, border.gray,contours, contours.drawlabels, contours.lty,
              contours.lwd, contours.levels, contours.labcex, 0, arrow, axes, ptsize,mmai,leglab,legend.cex, legend.add.line,
              ...)
     title(main=paste(round((1-modgamobj$predobj$level)*100,2),"% CI (lower)"),cex.main=legend.cex)
-    colormap(modgamobj, map, exp, add, mapmin, mapmax, col.seq, border.gray,contours, contours.drawlabels, contours.lty,
+    colormap(modgamobj, map, exp, add, mapmin, mapmax, col.seq, anchor, border.gray,contours, contours.drawlabels, contours.lty,
              contours.lwd, contours.levels, contours.labcex, 0, arrow, axes, ptsize,mmai,leglab,legend.cex, legend.add.line,
              ...)
     title(main="Point Estimate",cex.main=legend.cex)
-    colormap(tempobj2, map, exp, add, mapmin, mapmax, col.seq, border.gray,contours, contours.drawlabels, contours.lty,
+    colormap(tempobj2, map, exp, add, mapmin, mapmax, col.seq, anchor, border.gray,contours, contours.drawlabels, contours.lty,
              contours.lwd, contours.levels, contours.labcex, 0, arrow, axes, ptsize,mmai,leglab,legend.cex, legend.add.line,
              ...)
     title(main=paste(round((1-modgamobj$predobj$level)*100,2),"% CI (higher)"),cex.main=legend.cex)
     par(mfrow=op.mfrow)
   }else
     ## Plot the predictions only
-    colormap(modgamobj, map, exp, add, mapmin, mapmax, col.seq, border.gray,contours, contours.drawlabels, contours.lty,
+    colormap(modgamobj, map, exp, add, mapmin, mapmax, col.seq, anchor, border.gray,contours, contours.drawlabels, contours.lty,
              contours.lwd, contours.levels, contours.labcex,0, arrow, axes, ptsize, mai,leglab,legend.cex, legend.add.line,
              ...)
 }

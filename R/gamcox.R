@@ -58,7 +58,9 @@ gamcox <- function(formula, data, subset, weights, span=0.5, I.span=0.2, degree=
         ## extract coords name, span and degree
         spanf = if(!missing(span)) span else NULL
         degreef = if(!missing(degree)) degree else NULL
-        los <- attr(mt,"term.labels")[order-1]
+ #      next line not working properly when lo(.,.) term is listed first
+ #      los <- attr(mt,"term.labels")[order-1]   
+  		los <- untangle.specials(terms(formula,specials="lo"), "lo")$vars   # error fix  
         los <- gsub("[[:blank:]]","",los)
         start <- gregexpr("\\(",los)[[1]]; end <-rev(gregexpr("\\)",los)[[1]]) 
         losub <- substr(los,start[1]+1,end[1]-1)
@@ -74,8 +76,8 @@ gamcox <- function(formula, data, subset, weights, span=0.5, I.span=0.2, degree=
           for(i in 3:length(parts[[1]]))
             eval(parse(text=parts[[1]][i]))
         }
-        if(!is.null(spanf))if(spanf!=span) 
-          warning(paste("span size of",span,"in the formula will be used instead of value of argument sp=", sp))
+        if(!is.null(spanf))if(!all.equal(spanf,span)) 
+          warning(paste("span size of",span,"in the formula will be used instead of value of argument sp=", spanf))  # error fix
         if(!is.null(span)) sp = span
         if(!is.null(degreef))if(degreef!=degree)
           warning(paste("degree=", degree,"in the formula will be used instead of value of argument degree=", degreef))

@@ -8,8 +8,8 @@ Displays a color image map, including a legend, scale bar, and optional North ar
 }
 \usage{
 \method{plot}{modgam}(x, map = NULL, exp = FALSE, add = FALSE, intervals=TRUE, 
-       mapmin = NULL, mapmax = NULL, col.seq = diverge_hsv(201), border.gray = 0.3,
-       contours=c("none","response","permrank","interval"),
+       mapmin = NULL, mapmax = NULL, col.seq = diverge_hsv(201), anchor=FALSE, 
+       border.gray = 0.3, contours=c("none","response","permrank","interval"),
        contours.drawlabels=FALSE, contours.lty=1, contours.lwd=1, 
        contours.levels, contours.labcex=0.7, arrow=TRUE, axes=FALSE, ptsize=0.9,
        alpha=0.05, mai, legend.name = "predicted values", legend.cex=1, \dots)
@@ -40,6 +40,9 @@ the maximum value for the color scale legend.
 }
   \item{col.seq}{
 The color sequence (palette) used to display the predicted values on the map.
+}
+  \item{anchor}{
+Use \code{anchor=TRUE} to center the color palette on \code{legend.add.line}.  When \code{anchor=FALSE} or when \code{legend.add.line} is not specified, the color palette will be centered halfway between mapmin and mapmax.  \code{anchor=TRUE} is recommended when using a divergent palette.    
 }
   \item{border.gray}{
 gray scale for the border of \code{map}, ranges from 0 to 1. It is white with \code{border.gray=1}, and black with \code{border.gray=0}. The defalt scale is 0.3.

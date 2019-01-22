@@ -56,10 +56,12 @@ optspan <- function (formula, data, offset, spans=seq(0.05,0.95,by=0.05), m="adj
     if(is.null(order) | ncols<2)
       stop("Two parameters must specified in lo() in the formula")
     if(length(order)>1)
-      stop("Only one smoothing function could be included in the model")
+      stop("Only one smoothing function can be included in the model")
     
     ## Extract coords names
-    los <- attr(mt,"term.labels")[order-1-surv]
+ #   next line not working properly when lo(.,.) term is listed first
+ #   los <- attr(mt,"term.labels")[order-1-surv]
+	los <- untangle.specials(terms(formula,specials="lo"), "lo")$vars   # error fix
     los <- gsub("[[:blank:]]","",los)
     start <- gregexpr("\\(",los)[[1]]; end <-rev(gregexpr("\\)",los)[[1]]) 
     losub <- substr(los,start[1]+1,end[1]-1)

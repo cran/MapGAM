@@ -25,7 +25,7 @@ gamcox.fit <- function(Y, X, smooth.frame, weights, span=0.5, I.span = 0.2, degr
   which = grep("lo\\([[:print:]]+\\)", colnames(X))
   ls <- dls(Y, X, which, eta, I.span, TRUE)
   w <- ls$w*(ls$w>=0)
-  deltaeta <- ls$deltaeta
+  deltaeta <- pmin(pmax(ls$deltaeta,-3),3)
   dev.old <- -ls$l*2
   ## Update eta iteratively
   for(i in 1:Maxiter){
@@ -50,7 +50,8 @@ gamcox.fit <- function(Y, X, smooth.frame, weights, span=0.5, I.span = 0.2, degr
     }  
     ### Backfitting ends
     eta <- Z - residuals
-    ls <- dls(Y, X, which, eta, I.span, TRUE)	
+    if(any(abs(eta)==Inf)) stop("infinite values in linear predictor")
+    ls <- dls(Y, X, which, eta, I.span, TRUE)
     dev.new <- -2*ls$l
     if(i==1 | dev.new<=dev.old){
       rslt.smooth.fit=smooth.fit
@@ -62,14 +63,16 @@ gamcox.fit <- function(Y, X, smooth.frame, weights, span=0.5, I.span = 0.2, degr
       rslt$smooth <- s
       dev.out <- dev.new
       rslt$residuals <- residuals
-      deltaeta <- ls$deltaeta
+      deltaeta <- pmin(pmax(ls$deltaeta,-3),3)
       w <- ls$w*(ls$w>=0)
     }
     ## check convergence
     if(dev.new>dev.old | (abs(dev.old - dev.new)/(dev.old + 0.1) <=tol)) break;
     dev.old <- dev.new
   }
-  if(i == Maxiter)warnings(paste("The process does not converge in",Maxiter,"iterations"))
+  if(i == Maxiter) warning(paste("The process does not converge in",Maxiter,"iterations"))
+  if (i == 1 & dev.new > dev.old) warning(paste("Deviance is better (",round(dev.old,1),
+  	") for separate linear predictors for X and Y coordinates, without any smoothing!"))
   rslt$deviance <- dev.out
   dfs = predict(rslt.smooth.fit, se=TRUE)
   rslt$var = dfs$se^2
