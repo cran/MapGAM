@@ -6,9 +6,9 @@ Fit a Generalized Additive Model (GAM) with a Two-Dimensional Smooth and Make Pr
 Fits a crude or adjusted regression on a user-supplied grid for spatial analysis using a generalized additive model with a two-dimensional LOESS smooth for geolocation (or any other two-dimensional predictor).  Includes optional pointwise confidence intervals and permutation tests for global and local tests of the null hypothesis that the two-dimensional predictor (e.g., geolocation) is not associated with the outcome.  Most applications will pass the output of this function to \code{plot.modgam} to map the resulting odds ratios or other effect estimates.}
 \usage{
 modgam(formula, rgrid, data, subset, offset, family = binomial(), permute = 0, 
-       conditional = TRUE, m = "adjusted", sp = seq(0.05,0.95,0.05), degree=1, 
-       keep=FALSE, type=c("spatial","all"), reference = "median", se.fit = FALSE,  
-       alpha = 0.05, verbose = TRUE, \dots)
+       conditional = TRUE, pointwise = FALSE, m = "adjusted", sp = seq(0.05,0.95,0.05), 
+       degree=1, keep=FALSE, type=c("spatial","all"), reference = "median", 
+       se.fit = FALSE, alpha = 0.05, verbose = TRUE, \dots)
 }
 \arguments{
   \item{formula}{
@@ -30,10 +30,14 @@ an optional vector specifying a subset of observations to be used in the fitting
 name in data and rgrid that will be used as offset in the model. It will be ignored if offset is specified in \code{formula}. \code{offset} will be ignored if \code{family="survival"}
 }
   \item{permute}{
-the number of permutations of the data set for testing the significance of the two-dimensional predictor. \code{permute = 0} (default) produces no permutation tests.  If \code{permute} > 0, the paired coordinates for the two-dimensional predictor are randomly permuted in order to simulate the distribution of results under the null hypothesis that location is not associated with the outcome.  1000 permutations are recommended for reasonable accuracy of p-values.  WARNING: Because each permutation requires refitting the GAM, permutation tests can be quite slow.    
+the number of permutations of the data set for testing the significance of the two-dimensional predictor. \code{permute = 0} (default) produces no permutation tests.  If \code{permute > 0}, the paired coordinates for the two-dimensional predictor are randomly permuted in order to simulate the distribution of results under the null hypothesis that location is not associated with the outcome.  1000 permutations are recommended for reasonable accuracy of p-values.  WARNING: Because each permutation requires refitting the GAM, permutation tests can be quite slow.    
 }
   \item{conditional}{
-a logical value indicating whether to run a conditional or unconditional permutation test; this argument is used only when \code{permute} > 0.  The default is a conditional permutation test: the span size is held fixed throughout all permutations even if \code{sp = NULL} to optimize the span size for the original data (see Young et al., 2012).  The unconditional permutation test repeats the span size optimization for each permutation, which is more conservative but takes about 20 times longer to compute.  If \code{conditional = FALSE} the sp argument is ignored when fitting both the original and permuted data sets.               
+a logical value indicating whether to run a conditional or unconditional permutation test; this argument is used only when \code{permute > 0}.  The default is a conditional permutation test: the span size is held fixed throughout all permutations even if \code{sp = NULL} to optimize the span size for the original data (see Young et al., 2012).  The unconditional permutation test repeats the span size optimization for each permutation, which is more conservative but takes about 20 times longer to compute.  If \code{conditional = FALSE} the sp argument is ignored when fitting both the original and permuted data sets.               
+}
+  \item{pointwise}{
+a logical value indicated whether to include pointwise permutation tests for every grid point.  This argument is only used
+when \code{permute > 0}.  Using \code{se.fit = TRUE} to determine grid points with significantly different outcomes is usually preferable to using pointwise permutation tests.     	
 }
   \item{m}{
 model type for the GAM.  Options are "crude" or "adjusted" (default).  If "crude", only the smooth for the two-dimensional predictor is included in the model (i.e., "crude" is a synonym for "unadjusted").  If "adjusted", all covariates in the data set (columns >= 4) are included in the model.     
@@ -54,10 +58,10 @@ use \code{type="spatial"}(default for censored survival data) to estimate the sp
 referent for the predicted values or effects. If \code{reference="none"}, the output will be predicted values at each grid point for either the spatial effect (\code{type="spatial"}) or the linear predictor including all covariates (\code{type="all"}).  If \code{reference = "median"}, the output will be the difference between the estimated effect/predictor at each grid point and the median effect/predictor (e.g., the log odds ratio for a binomial model with logit link). If \code{reference = "mean"}, the output will be the difference between the estimated effect/predictor at each grid point and the mean effect/predictor.  If \code{reference} is a data frame indicating a specific geolocation, the output will be the difference between the estimated effect/predictor at each grid point and the effect/predictor at the geolocation specified by \code{reference}.
 }
   \item{se.fit}{
-if \code{TRUE}, pointwise standard errors and confidence intervals are computed along with the predictions.   
+if \code{TRUE}, pointwise standard errors and confidence intervals are computed along with the predictions.  Results can be passed to \code{plot.modgam} with \code{contours = "interval"} to identify  clusters of the outcome (e.g., spatial regions with statistically significant outcomes--e.g., unusually high or low risks).   
 }
   \item{alpha}{
-the significace level used when \code{se.fit=TRUE}  
+the significace level used for confidence intervals when \code{se.fit = TRUE}  
 }
   \item{verbose}{
 a logical value indicating whether to print the GAM model statement, the percentile rank for the global deviance statistic in the permutation test, and the progress of the permutation test (report completion of every 10 permutations).  The default is \code{verbose = TRUE}.      
@@ -94,7 +98,7 @@ If \code{se.fit = TRUE} then the following values are provided:
 \item{conf.high}{the higher bounds for pointwise (1-\code{alpha}) confidence intervals.}
 If \code{permute > 0} then the following values are also provided:
 \item{global.permt}{the p-value based on the deviance statistic comparing models with and without geolocation (or other two-dimensional predictor), using the distribution of deviance statistics from the permuted data sets to represent the null distribution.  For a test of H0: geolocation is unassociated with the outcome variable (adjusting for any covariates if \code{m = "adjusted"}), reject H0 if the percentile rank is below alpha.   WARNING: by default \code{modgam} uses a conditional permutation test which produces inflated type I error rates; Young et al. (2012) recommend using alpha=0.025 to limit the type I error rate to approximately 5\%.} 
-\item{pointwise.permt}{for each point on the grid, the percentile rank of the local linear predictor for the model compared to the local linear predictor distribution from the permuted data sets.  This result is needed to define clusters of the outcome (e.g., spatial regions with statistically significant outcomes--e.g., unusually high or low risks).}
+\item{pointwise.permt}{Only provided when \code{pointwise = TRUE}.  For each point on the grid, the percentile rank of the local linear predictor for the model compared to the local linear predictor distribution from the permuted data sets.  This result can be used to define clusters of the outcome (e.g., spatial regions with statistically significant outcomes--e.g., unusually high or low risks), as in \code{plot.modgam} with \code{contours="permrank"}.}
 If \code{permute} > 0 and \code{keep = T} then the following values are also provided:
 \item{permutations}{a matrix containing null permuted values for each point on the grid, with the results for each permutation in a separate column.  For the binomial family and logit link these are provided as odds ratios, otherwise they are reported as linear predictors.}
 \item{deviances.permt}{a vector containing deviances for each permutation.}

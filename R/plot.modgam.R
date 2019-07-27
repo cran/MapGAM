@@ -38,7 +38,7 @@ plot.modgam <- function(x, map = NULL, exp = FALSE, add = FALSE, intervals=TRUE,
   ## contour settings
   if(contours!="none"){
     if (contours=="permrank" && is.null(modgamobj$pointwise.permt)) {
-      warning("permrank contours omitted because permute=0 in modgam")
+      warning("permrank contours omitted because permute=0 or pointwise=FALSE in modgam")
       contours = "none"
     }
     if (contours=="interval" && any(c(is.null(modgamobj$conf.low),is.null(modgamobj$conf.high)))){

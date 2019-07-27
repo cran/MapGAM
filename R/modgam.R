@@ -18,9 +18,9 @@
 #
 #*******************************************************************************
 modgam <- function (formula, rgrid, data, subset, offset, family = binomial(), permute = 0, 
-                  conditional = TRUE, m = "adjusted", sp = seq(0.05,0.95,0.05), degree = 1, 
-                  keep = FALSE, type=c("spatial","all"), reference = "median", se.fit = FALSE, 
-                  alpha = 0.05, verbose = TRUE, ...)
+                  conditional = TRUE, pointwise = FALSE, m = "adjusted", sp = seq(0.05,0.95,0.05), 
+                  degree = 1, keep = FALSE, type=c("spatial","all"), reference = "median", 
+                  se.fit = FALSE, alpha = 0.05, verbose = TRUE, ...)
 {
   call <- match.call()
   # for back-compatibility, allow data frame to be passed as first argument
@@ -35,8 +35,9 @@ modgam <- function (formula, rgrid, data, subset, offset, family = binomial(), p
           type = "spatial"
     }
     return(modgam(rgrid=rgrid, data=formula, subset=subset, offset=offstr, family=family, permute=permute,
-                    conditional = conditional, m = m, sp = sp, degree = degree, keep = keep, type=type, 
-                    reference = reference, se.fit = se.fit, alpha = alpha, verbose = verbose, ...))
+                    conditional = conditional, pointwise = pointwise, m = m, sp = sp, degree = degree, 
+                    keep = keep, type=type, reference = reference, se.fit = se.fit, alpha = alpha, 
+                    verbose = verbose, ...))
     
   }
   if(!missing(formula)){
@@ -195,7 +196,7 @@ modgam <- function (formula, rgrid, data, subset, offset, family = binomial(), p
   if (permute > 0) {
     grid.N = nrow(rgrid)
     data.N = nrow(data)
-    if (keep) 
+    if (keep & pointwise) 
       permrslt = matrix(NA, grid.N, permute - 1)
     ptranks = rep(1, grid.N)
     devstat = rep(NA, permute)
@@ -214,16 +215,18 @@ modgam <- function (formula, rgrid, data, subset, offset, family = binomial(), p
       }
       if(surv){
         m.gam <- gamcox(fmla,data=as.data.frame(m.data),span=sp,degree=degree,...)
-        m.pred <- predict(m.gam,rgrid,FALSE,type,reference)$pred
+        if(pointwise) m.pred <- predict(m.gam,rgrid,FALSE,type,reference)$pred
       }else{
         m.gam <- gam(fmla,family=family,data=as.data.frame(m.data),...)
-        m.pred <- mypredict.gam(m.gam,rgrid,FALSE,type,reference)$pred
+        if(pointwise) m.pred <- mypredict.gam(m.gam,rgrid,FALSE,type,reference)$pred
       }
       devstat[i] = model.0$deviance - m.gam$deviance
-      temprslt = m.pred
-      ptranks = ptranks + (rslt$fit > temprslt)*(!is.na(rslt$fit))*(!is.na(temprslt))
-      if (keep)
-        permrslt[, i - 1] = temprslt
+      if(pointwise){
+        temprslt = m.pred
+        ptranks = ptranks + (rslt$fit > temprslt)*(!is.na(rslt$fit))*(!is.na(temprslt))
+        if (keep)
+          permrslt[, i - 1] = temprslt
+      }
       if (verbose && i%%10 == 0)
         cat(paste("Permutation", i, "of", permute), fill = TRUE)
     }
@@ -234,7 +237,7 @@ modgam <- function (formula, rgrid, data, subset, offset, family = binomial(), p
     cat(paste("The global statistic for the ", tolower(m), 
               " model is ", globprint, sep = ""), fill = TRUE)
     rslt$global.permt = devglobp
-    rslt$pointwise.permt = as.vector(ptranks/permute)
+    if(pointwise) rslt$pointwise.permt = as.vector(ptranks/permute)
     if (keep) {
       rslt$permutations = permrslt
       rslt$deviances.permt = devstat

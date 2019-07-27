@@ -215,7 +215,7 @@ mypredict.gam <- function(object, newdata, se.fit=FALSE, type=c("all","spatial")
     dispersion <- sum((fit$weights * fit$residuals^2)[fit$weights > 0])/fit$df.residual
   }
   rslt$residual.scale <- as.vector(sqrt(dispersion))
-  cov.mat = vcov(fit)[pred.index,pred.index]
+  cov.mat = vcov(fit,complete=FALSE)[pred.index,pred.index]
   if(type=="all")
     csdata = newdata.matrix
   else

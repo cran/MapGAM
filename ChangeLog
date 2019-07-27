@@ -1,3 +1,14 @@
+2019-07-27 Scott Bartell
+  * DESCRIPTION (Version): New version is 1.2-5
+
+  * R/mypredict.gam.R:  Fixed error in mypredict.gam function associated with change in
+  default argument in vcov function since R 3.5.0.  
+
+  * R/modgam.R and R/plot.modgam:  Added "pointwise" argument with default value FALSE, to 
+  skip pointwise permutation tests unless requested by the user.  Identification of high  
+  risk regions is better accomplished using se.fit=TRUE, available since version 1.0. 
+  Plot function warning message updated to reflect new argument.  
+
 2019-01-21 Scott Bartell
   * DESCRIPTION (Version): New version is 1.2-4
 
