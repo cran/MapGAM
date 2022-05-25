@@ -173,17 +173,22 @@ modgam <- function (formula, rgrid, data, subset, offset, family = binomial(), p
   # Fit the model and make predictions
   if(surv){
     model <- eval(substitute(gamcox(fmla,data=as.data.frame(data),...)))
+    nrows <- dim(model$X)[1]
     pred <- predict(model,rgrid,se.fit,type,reference,alpha,verbose,)
     model.0 <- eval(substitute(gamcox(fmla.0,data=as.data.frame(data),...)))
+    nrows.0 <- model.0$n    
   }else{
     model <- eval(substitute(gam(fmla,family=family,data=as.data.frame(data),...)))
+    nrows <- length(model$y)
     pred <- mypredict.gam(model,rgrid,se.fit,type,reference,alpha,verbose)
     model.0 <- eval(substitute(gam(fmla.0,family=family,data=as.data.frame(data),...)))
+    nrows.0 <- length(model.0$y)
   }
   
   dev = model.0$deviance-model$deviance; df = model.0$df.residual - model$df.residual
   rslt <- list(grid = rgrid[,index],family=family, type=type,span=sp,gamobj = model, predobj = pred,
-               fit = pred$pred, exp.fit = exp(pred$pred),global.pvalue = 1-pchisq(dev,df=df))
+               fit = pred$pred, exp.fit = exp(pred$pred),
+               global.pvalue = if(nrows == nrows.0) 1-pchisq(dev,df=df))
   if(se.fit){
     rslt$se = pred$se
     rslt$conf.low = pred$conf.low

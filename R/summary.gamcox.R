@@ -40,4 +40,10 @@ summary.gamcox <- function(object,...){
   print(summary(sp-median(sp)))
   cat("\nDegrees of Residual Freedom:",fit$df.residual,"\n")
   cat("Residual Deviance:", fit$deviance,"\n")
+  if(!is.null(fit$global.pvalue)) {
+    if(fit$global.pvalue>=1e-5)
+      cat("p value for testing the global spatial effect:", fit$global.pvalue,"\n")
+    else 
+      cat("p value for testing the global spatial effect: <1e-5 \n")
+  }
 }

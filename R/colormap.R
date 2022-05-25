@@ -1,7 +1,7 @@
 #******************************************************************************
 #
 # Maps Predicted Values and Clusters on a Two-Dimentional Map
-# Copyright (C) 2016, The University of California, Irvine
+# Copyright (C) 2016, 2022, The University of California, Irvine
 #
 # This library is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,8 +35,8 @@ colormap <- function(obj, map=NULL, exp=FALSE, add=FALSE,  mapmin=NULL, mapmax=N
 	  if (is.null(mapmax)) mapmax=max(results[,3], na.rm=TRUE)
 	  if (!is.null(map)) {
 		  if (add==T) {add=F; warning("add=T ignored because the map argument was used")}  
-		  if (class(map)=="map") maprange = map$range else
-		  if (class(map)=="SpatialPolygonsDataFrame") {
+		  if (inherits(map,"map")) maprange = map$range else
+		  if (inherits(map,"SpatialPolygonsDataFrame")) {
 			  mapcenter = apply(bbox(map),1,mean)
 			  center2edges = c(-1,1)*max(apply(bbox(map),1,diff))/2
 			  maprange = c(mapcenter[1]+center2edges,mapcenter[2]+center2edges)
@@ -114,8 +114,8 @@ colormap <- function(obj, map=NULL, exp=FALSE, add=FALSE,  mapmin=NULL, mapmax=N
 	  
 	  ## Add the map
 	  if (!is.null(map)) {
-		  if (class(map)=="SpatialPolygonsDataFrame") plot(map, border=gray(border.gray), add=T) else {
-			  if (class(map)!="map") warning("map class not recognized--attempting generic plot")
+		  if (inherits(map,"SpatialPolygonsDataFrame")) plot(map, border=gray(border.gray), add=T) else {
+			  if (!inherits(map,"map")) warning("map class not recognized--attempting generic plot")
 			  lines(map,col=gray(border.gray),type="l")
 		  }
 	  }
@@ -196,7 +196,7 @@ colormap <- function(obj, map=NULL, exp=FALSE, add=FALSE,  mapmin=NULL, mapmax=N
 	  }
 
 	  # Scale bar
-	  if (is.null(map)==F & class(map)=="SpatialPolygonsDataFrame") {
+	  if (!is.null(map) & inherits(map,"SpatialPolygonsDataFrame")) {
 		  d = 0.17*(dataXmax - dataXmin)
 		  d = signif(d,1)
 		  leftedge = dataXmin+1.125*len

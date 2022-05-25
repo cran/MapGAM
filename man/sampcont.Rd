@@ -55,9 +55,18 @@ the inverse probability weights for the rows in \code{rdata}.  Important to incl
   \item{ncont}{
 the total number of controls in the sample. 
 }
+  \item{type}{
+statified or simple sampling, as specified by the same argument described above.
 }
-\author{
-Scott Bartell
+  \item{gridsize}{
+a vector with the numbers of rows and columns for the stratified sampling grid.
+}
+  \item{grid}{
+the stratified sampling grid in PolySet format.
+}
+}
+  \author{
+Scott M. Bartell and Ian W. Tang
 \email{sbartell@uci.edu}.
 }
 

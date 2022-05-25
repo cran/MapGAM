@@ -1,13 +1,31 @@
+
+2022-05-25 Scott Bartell
+  * DESCRIPTION (Version): New version is 1.2-6
+
+  * R/colormap.R, R/trimdata.R, and R/predgrid.R:  replaced class checks for different 
+  map types with inherits function instead of using ==, as per CRAN recommendation.
+
+  * R/modgam.R and R/summary.modgam.R:  Now only produces a global p value if the number
+  of rows in the model fits are identical for the smoothed model and the null model (i.e., 
+  there are no missing data in the variables being smoothed).  See modgam help file for
+  more information.      
+  
+  * R/sampcont.R:  Fixed errors that had caused nrow and ncol values to be swapped, 
+  reversing the intended dimensions for the stratified sampling grid.  Also now added the
+  sampling grid as output from the function, in order to facilitate plotting. Thanks to 
+  Ian W. Tang, University of California, Irvine, for discovering the problem and providing 
+  code for these changes.
+
 2019-07-27 Scott Bartell
   * DESCRIPTION (Version): New version is 1.2-5
 
   * R/mypredict.gam.R:  Fixed error in mypredict.gam function associated with change in
   default argument in vcov function since R 3.5.0.  
 
-  * R/modgam.R and R/plot.modgam:  Added "pointwise" argument with default value FALSE, to 
-  skip pointwise permutation tests unless requested by the user.  Identification of high  
-  risk regions is better accomplished using se.fit=TRUE, available since version 1.0. 
-  Plot function warning message updated to reflect new argument.  
+  * R/modgam.R and R/plot.modgam.R:  Added "pointwise" argument with default value FALSE, 
+  to skip pointwise permutation tests unless requested by the user.  Identification of 
+  high   risk regions is better accomplished using se.fit=TRUE, available since version 
+  1.0.  Plot function warning message updated to reflect new argument.  
 
 2019-01-21 Scott Bartell
   * DESCRIPTION (Version): New version is 1.2-4

@@ -1,7 +1,7 @@
 #***********************************************************************************
 #
 # Trim a Data Set To Map Boundaries 
-# Copyright (C) 2016, The University of California, Irvine
+# Copyright (C) 2016, 2022, The University of California, Irvine
 #
 # This library is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
 #
 #*******************************************************************************
 trimdata <- function(rdata, map, Xcol=2, Ycol=3, rectangle=F, buffer=0.05) {
-	if(class(map)=="SpatialPolygonsDataFrame") {
+	if(inherits(map,"SpatialPolygonsDataFrame")) {
 		mappoly=SpatialPolygons2PolySet(map) 
 		mr = c(range(mappoly$X),range(mappoly$Y))	# map range
 	} else 
-	if (class(map)=="map") {
+	if (inherits(map,"map")) {
 		map_sp = map2SpatialLines(map,proj4string=CRS("+proj=longlat +datum=WGS84"))	
 		mappoly=SpatialLines2PolySet(map_sp)
 		mr = map$range		# map range

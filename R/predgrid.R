@@ -36,13 +36,13 @@ predgrid <-  function(dataXY=NULL, map=NULL, nrow=100, ncol=100, X=NULL, Y=NULL)
 		Yrange = range(Y, na.rm=TRUE)
 		done = TRUE
 	}
-	if (!done && class(map) == "SpatialPolygonsDataFrame") {
+	if (!done && inherits(map,"SpatialPolygonsDataFrame")) {
         mappoly = SpatialPolygons2PolySet(map)
         Xrange = range(mappoly$X)
         Yrange = range(mappoly$Y)
 		done = TRUE
     }
-    else if (!done && class(map) == "map") {
+    else if (!done && inherits(map,"map")) {
         map_sp = map2SpatialLines(map, proj4string = CRS("+proj=longlat +datum=WGS84"))
         mappoly = SpatialLines2PolySet(map_sp)
         mr = map$range
