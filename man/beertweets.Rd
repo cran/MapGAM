@@ -22,9 +22,7 @@ A sample of geocoded tweets from within in the contiguous US, from June to Octob
 % What time zone(s) for time variable?
 }
 \source{
-Dr. Matthew Zook, University of Kentucky
-
-\url{http://www.floatingsheep.org/2012/07/church-or-beer-americans-on-twitter.html}
+Dr. Matthew Zook, University of Kentucky, floatingsheep.org
 }
 \examples{
 data(beertweets)

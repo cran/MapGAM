@@ -105,17 +105,18 @@ If \code{permute} > 0 and \code{keep = T} then the following values are also pro
 }
 
 \references{
-Bai L, Gillen DL, Bartell SM, Vieira VM. \href{https://journal.r-project.org/archive/2020/RJ-2020-001/index.html}{Mapping smoothed spatial effect estimates from individual-level data:  MapGAM}. The R Journal 2020, 12:32-48. 
+Bai L, Gillen DL, Bartell SM, Vieira VM. \doi{10.32614/RJ-2020-001}{Mapping smoothed spatial effect estimates from individual-level data:  MapGAM}. The R Journal 2020, 12:32-48. 
 
 Hastie TJ, Tibshirani RJ. Generalized Additive Models.  (Chapman & Hall/CRC Monographs on Statistics & Applied Probability, Boca Raton, Florida, 1990).  
 
-Kelsall J, Diggle P. Spatial variation in risk of disease: a nonparametric binary regression approach. J Roy Stat Soc C-App 1998, 47:559-573. 	
+Kelsall J, Diggle P. \doi{10.1111/1467-9876.00128}{Spatial variation in risk of disease: a nonparametric binary 
+regression approach}. J Roy Stat Soc C-App 1998, 47:559-573. 	
 	
-Vieira V, Webster T, Weinberg J, Aschengrau A, Ozonoff D. \href{https://ehjournal.biomedcentral.com/articles/10.1186/1476-069X-4-11}{Spatial analysis of lung, colorectal, and breast cancer on Cape Cod: An application of generalized additive models to case-control data}. Environmental Health 2005, 4:11. 
+Vieira V, Webster T, Weinberg J, Aschengrau A, Ozonoff D. \doi{10.1186/1476-069X-4-11}{Spatial analysis of lung, colorectal, and breast cancer on Cape Cod: An application of generalized additive models to case-control data}. Environmental Health 2005, 4:11. 
 
-Webster T, Vieira V, Weinberg J, Aschengrau A. \href{https://ij-healthgeographics.biomedcentral.com/articles/10.1186/1476-072X-5-26}{Method for mapping population-based case-control studies using Generalized Additive Models}. International Journal of Health Geographics 2006, 5:26.
+Webster T, Vieira V, Weinberg J, Aschengrau A. \doi{10.1186/1476-072X-5-26}{Method for mapping population-based case-control studies using Generalized Additive Models}. International Journal of Health Geographics 2006, 5:26.
 
-Young RL, Weinberg J, Vieira V, Ozonoff A, Webster TF. \href{https://ij-healthgeographics.biomedcentral.com/articles/10.1186/1476-072X-9-37}{A power comparison of generalized additive models and the spatial scan statistic in a case-control setting}. International Journal of Health Geographics 2010, 9:37.
+Young RL, Weinberg J, Vieira V, Ozonoff A, Webster TF. \doi{10.1186/1476-072X-9-37}{A power comparison of generalized additive models and the spatial scan statistic in a case-control setting}. International Journal of Health Geographics 2010, 9:37.
 }
 
 \author{
@@ -130,17 +131,16 @@ Send bug reports to \email{sbartell@uci.edu}.
 \code{\link{predgrid}}, 
 \code{\link{optspan}}, 
 \code{\link{plot.modgam}}
-\code{\link{colormap}}, 
-\code{\link{readShapePoly}}.
+\code{\link{colormap}}.
 }
 \examples{
 \donttest{
 # Load base map in SpatialPolygonsDataFrame format
-# This map was read from ESRI shapefiles using the readShapePoly function
+# This map was read from ESRI shapefiles using the readShapePoly function (soon to be deprecated)
 data(MAmap)	
 # Load data and create grid on base map
 data(MAdata)							
-gamgrid <- predgrid(MAdata, map=MAmap)    # requires PBSmapping package		
+gamgrid <- predgrid(MAdata, map=MAmap)    
 # Fit crude logistic GAM to the MA data using span size of 50\%
 # and predict odds ratios for every point on gamgrid
 fit1 <- modgam(data=MAdata, rgrid=gamgrid, m="crude", sp=0.5)  
@@ -161,10 +161,10 @@ fit2.f
 
 # Detailed example with a continuous outcome variable, map projections, 
 # and data trimming:  investigating tweet times by geolocation
-# NOTE: this example requires the maps, mapproj, and PBSmapping packages
+# NOTE: this example requires the maps and mapproj packages
 # Convert base map and beer tweet data locations to US Albers projection 
 # for better distance estimates than using (lat,long) as (X,Y) coords 
-if(require(maps) & require(mapproj) & require(PBSmapping)) {
+if(require(maps) & require(mapproj)) {
 	USmap <- map("state",projection="albers",parameters=c(29.5,45.5),
 		plot=FALSE,fill=TRUE,col="transparent")
 	data(beertweets)

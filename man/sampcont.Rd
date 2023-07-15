@@ -4,7 +4,7 @@
 Unmatched Control Sampling
 }
 \description{
-Take all cases and a random sample of controls from a data frame.  Simple random sampling and stratified random sampling are available.  For statified random sampling, strata can be defined by region, or by region and time.  If no specific regions are specified then the function will create a regular grid for sampling.     
+Take all cases and a random sample of controls from a data frame.  Simple random sampling and spatially stratified random sampling are available.  For spatially statified random sampling, strata can be defined by region, or by region and additional stratification variables (see Tang et al., 2023 for examples and simulation comparisons).  If no specific regions are specified with stratified sampling, the function will create a regular grid for spactially stratified sampling.     
 }
 \usage{
 sampcont(rdata, type = "stratified", casecol=1, Xcol=2, Ycol=3, regions = NULL, 
@@ -27,7 +27,7 @@ the column number in \code{rdata} for the Y geocoordinate.
 \code{"stratified"} (default) or \code{"simple"}.  If \code{"simple"} then a simple random sample of \code{n} controls (rows of \code{rdata} with \code{outcome=0}) is obtained.  If \code{"stratified"} then a stratified random sample of controls is obtained, with up to \code{n} controls per stratum.  Sampling strata are defined by the \code{regions} and \code{times} arguments.  All cases (rows with outcome=1) are taken for the sample regardless of the value supplied for \code{type}.  
 }
   \item{regions}{
-a vector of length equal to the number of rows in \code{rdata}, used to construct sampling strata.  Only used if \code{type = "stratified"}.  If \code{regions = NULL} and the PBSmapping package is available then the function will define \code{regions} as a vector of specific grid cells on a regular grid with \code{nrow} rows and \code{ncol} columns.  If \code{times = NULL} then the nonempty regions are used as the sampling strata.  If \code{times} is a vector, then the sampling strata are all nonempty combinations of \code{regions} and \code{times}.      
+a vector of length equal to the number of rows in \code{rdata}, used to construct sampling strata.  Only used if \code{type = "stratified"}.  If \code{regions = NULL} then the function will define \code{regions} as a vector of specific grid cells on a regular grid with \code{nrow} rows and \code{ncol} columns.  If \code{times = NULL} then the nonempty regions are used as the sampling strata.  If \code{times} is a vector, then the sampling strata are all nonempty combinations of \code{regions} and \code{times}.      
 }
   \item{addstrat}{
 a vector of length equal to the number of rows in \code{rdata}, used along with \code{regions} to construct sampling strata.  If \code{addstrat = NULL} then the sampling strata are defined only by the \code{regions} argument.  If \code{addstrat} is a vector, then the sampling strata are all nonempty combinations of \code{regions} and \code{addstrat}.  Continuous variables should generally be binned before being passed through this argument, as there are no efficiency gains if each value in \code{addstrat} is unique.     
@@ -70,6 +70,10 @@ Scott M. Bartell and Ian W. Tang
 \email{sbartell@uci.edu}.
 }
 
+  \references{
+Tang IW, Bartell SM, Vieira VM. \doi{10.1016/j.sste.2023.100584}{Unmatched Spatially Stratified Controls: A simulation study examining efficiency and precision using spatially-diverse controls and generalized additive models}. Spatial and Spatio-temporal Epidemiology 2023, 45:100584.
+}
+
 \seealso{
 \code{\link{modgam}}
 }
@@ -81,10 +85,9 @@ data(beertweets)
 samp1 <- sampcont(beertweets, type="simple", n=1000)
 
 # take a stratified random sample of controls on a 80x50 grid
-# requires PBSmapping package
 samp2 <- NULL
 \donttest{
-if(require(PBSmapping)) samp2 <- sampcont(beertweets, nrow=80, ncol=50)
+samp2 <- sampcont(beertweets, nrow=80, ncol=50)
 
 # Compare locations for the two sampling designs (cases in red)
 par(mfrow=c(2,1), mar=c(0,3,4,3))

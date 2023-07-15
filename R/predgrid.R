@@ -1,7 +1,7 @@
 #***********************************************************************************
 #
 # Create a Grid and Clip It to a Map and Data Bounds
-# Copyright (C) 2016, The University of California, Irvine
+# Copyright (C) 2016, 2023, The University of California, Irvine
 #
 # This library is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -36,18 +36,22 @@ predgrid <-  function(dataXY=NULL, map=NULL, nrow=100, ncol=100, X=NULL, Y=NULL)
 		Yrange = range(Y, na.rm=TRUE)
 		done = TRUE
 	}
-	if (!done && inherits(map,"SpatialPolygonsDataFrame")) {
-        mappoly = SpatialPolygons2PolySet(map)
-        Xrange = range(mappoly$X)
-        Yrange = range(mappoly$Y)
+	if (!done && (inherits(map,"Spatial") | inherits(map,"RasterLayer"))) {  
+		mr <- bbox(map)
+        Xrange <- mr[1,]
+        Yrange <- mr[2,]
+		done = TRUE
+    }
+    else if (!done && inherits(map,"sf")) {
+      	mr = st_bbox(map)
+      	Xrange = mr[c(1,3)]
+      	Yrange = mr[c(2,4)]
 		done = TRUE
     }
     else if (!done && inherits(map,"map")) {
-        map_sp = map2SpatialLines(map, proj4string = CRS("+proj=longlat +datum=WGS84"))
-        mappoly = SpatialLines2PolySet(map_sp)
-        mr = map$range
-        Xrange = mr[1:2]
-        Yrange = mr[3:4]
+      	mr = map$range
+      	Xrange = mr[1:2]
+      	Yrange = mr[3:4]
 		done = TRUE
     }
     if (!done) stop(paste("dataXY, X and Y, and/or a valid map must be specified"))

@@ -113,19 +113,18 @@ Send bug reports to \email{sbartell@uci.edu}.
 \donttest{
 data(MAmap)		
 data(MAdata) 
-# Create a grid on the base map (PBSmapping package recommended)
-if(require(PBSmapping)) MAgrid <- predgrid(MAdata, map=MAmap) else 
-MAgrid <- predgrid(MAdata)		
+# Create a grid on the base map 
+MAgrid <- predgrid(MAdata, map=MAmap)
 # fit crude GAM model to the MA data using span size of 50\%
 fit1 <- modgam(data=MAdata, rgrid=MAgrid, m="crude", sp=0.5)  
 # Plot a map showing crude odds ratios
 plot(fit1, MAmap)					
 
 #### A detailed example including map projections and data trimming
-# NOTE: this example requires the maps, mapproj, and PBSmapping packages
+# NOTE: this example requires the maps and mapproj packages
 # Convert base map and beer tweet data locations to US Albers projection 
 # projected coords yield better distance estimates than (lat,long)
-if(require(maps) & require(mapproj) & require(PBSmapping)) {
+if(require(maps) & require(mapproj)) {
   USmap <- map("state",projection="albers",parameters=c(29.5,45.5),
                plot=FALSE,fill=TRUE,col="transparent")
   data(beertweets)
