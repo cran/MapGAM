@@ -67,7 +67,7 @@ the significace level used for confidence intervals when \code{se.fit = TRUE}
 a logical value indicating whether to print the GAM model statement, the percentile rank for the global deviance statistic in the permutation test, and the progress of the permutation test (report completion of every 10 permutations).  The default is \code{verbose = TRUE}.      
 }
   \item{\dots}{
-further arguments to be passed to the \code{\link{gam}} or \code{\link{gamcox}} function (e.g., weights).  	
+further arguments to be passed to the \code{\link[gam:gam]{gam}} or \code{\link{gamcox}} function (e.g., weights).  	
 }
 }
 
@@ -85,7 +85,7 @@ When a permutation test is requested, for each permutation the paired X and Y co
 
 \item{grid}{a data frame with X and Y coordinates from rgrid.}
 \item{span}{the span size used for the LOESS smooth.  If \code{keep = TRUE} and \code{conditional = FALSE}, a vector with optimized span sizes for the original data set and each of the permuted data sets.}
-\item{gamobj}{the \code{\link{gam}} or \code{\link{gamcox}} model object from the fit to the data.}
+\item{gamobj}{the \code{\link[gam:gam]{gam}} or \code{\link{gamcox}} model object from the fit to the data.}
 \item{predobj}{the \code{\link{mypredict.gam}} or \code{\link{predict.gamcox}} model object from the fit to the data.}
 \item{family}{the family and link function used for the model.}
 \item{fit}{the predicted values for each point on the grid.  For Gaussian family models, predicted values are for the outcome variable at each grid point.  For non-Gaussian families, predicted values are for the spatial effect alone on the scale of the linear predictor, compared to a referent specified through augument \code{reference} (e.g., for a binomial family logit link model with \code{reference = "median"}, the fit values are the difference in log odds of the outcome between the grid point and the median log odds, holding other predictors constant).  If predicted responses are desired for non-Gaussian families, they can be obtained from the fit values by setting \code{reference="none"} and applying the inverse link function.}
@@ -105,18 +105,20 @@ If \code{permute} > 0 and \code{keep = T} then the following values are also pro
 }
 
 \references{
-Bai L, Gillen DL, Bartell SM, Vieira VM. \doi{10.32614/RJ-2020-001}{Mapping smoothed spatial effect estimates from individual-level data:  MapGAM}. The R Journal 2020, 12:32-48. 
+Bai L, Gillen DL, Bartell SM, Vieira VM. Mapping smoothed spatial effect estimates from individual-level data:  MapGAM. The R Journal 2020, 12:32-48. \doi{10.32614/RJ-2020-001} 
 
 Hastie TJ, Tibshirani RJ. Generalized Additive Models.  (Chapman & Hall/CRC Monographs on Statistics & Applied Probability, Boca Raton, Florida, 1990).  
 
-Kelsall J, Diggle P. \doi{10.1111/1467-9876.00128}{Spatial variation in risk of disease: a nonparametric binary 
-regression approach}. J Roy Stat Soc C-App 1998, 47:559-573. 	
+Kelsall J, Diggle P. Spatial variation in risk of disease: a nonparametric binary regression approach. J Roy Stat Soc C-App 1998, 47:559-573. \doi{10.1111/1467-9876.00128} 	
+
+Tang IW, Bartell SM, Vieira VM. Unmatched Spatially Stratified Controls: A simulation study examining efficiency and precision using spatially-diverse controls and generalized additive models. Spatial and Spatio-temporal Epidemiology 2023, 45:100584. \doi{10.1016/j.sste.2023.100584}
 	
-Vieira V, Webster T, Weinberg J, Aschengrau A, Ozonoff D. \doi{10.1186/1476-069X-4-11}{Spatial analysis of lung, colorectal, and breast cancer on Cape Cod: An application of generalized additive models to case-control data}. Environmental Health 2005, 4:11. 
+Vieira V, Webster T, Weinberg J, Aschengrau A, Ozonoff D. Spatial analysis of lung, colorectal, and breast cancer on Cape Cod: An application of generalized additive models to case-control data. Environmental Health 2005, 4:11. \doi{10.1186/1476-069X-4-11} 
 
-Webster T, Vieira V, Weinberg J, Aschengrau A. \doi{10.1186/1476-072X-5-26}{Method for mapping population-based case-control studies using Generalized Additive Models}. International Journal of Health Geographics 2006, 5:26.
+Webster T, Vieira V, Weinberg J, Aschengrau A. Method for mapping population-based case-control studies using Generalized Additive Models. International Journal of Health Geographics 2006, 5:26. \doi{10.1186/1476-072X-5-26}
 
-Young RL, Weinberg J, Vieira V, Ozonoff A, Webster TF. \doi{10.1186/1476-072X-9-37}{A power comparison of generalized additive models and the spatial scan statistic in a case-control setting}. International Journal of Health Geographics 2010, 9:37.
+Young RL, Weinberg J, Vieira V, Ozonoff A, Webster TF. A power comparison of generalized additive models and the spatial scan statistic in a case-control setting. International Journal of Health Geographics 2010, 9:37. \doi{10.1186/1476-072X-9-37}
+
 }
 
 \author{
@@ -130,8 +132,9 @@ Send bug reports to \email{sbartell@uci.edu}.
 \seealso{
 \code{\link{predgrid}}, 
 \code{\link{optspan}}, 
-\code{\link{plot.modgam}}
-\code{\link{colormap}}.
+\code{\link{plot.modgam}},
+\code{\link{colormap}},
+\code{\link[gam:gam]{gam}}.
 }
 \examples{
 \donttest{

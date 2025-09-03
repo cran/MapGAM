@@ -1,3 +1,13 @@
+2025-08-03 Scott Bartell
+  * DESCRIPTION (Version): New version is 1.3-1
+
+  * Updated external DOI links in help files, to conform to new CRAN rules.
+
+  * Further updated help files to better reflect deprecation of maptools packages.
+
+  * R/gamcox.R and R/gamcox.fit.R: fixed bug related to handling of missing weights argument.
+
+
 2023-07-12 Scott Bartell
   * DESCRIPTION (Version): New version is 1.3
 

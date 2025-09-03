@@ -71,7 +71,7 @@ Scott M. Bartell and Ian W. Tang
 }
 
   \references{
-Tang IW, Bartell SM, Vieira VM. \doi{10.1016/j.sste.2023.100584}{Unmatched Spatially Stratified Controls: A simulation study examining efficiency and precision using spatially-diverse controls and generalized additive models}. Spatial and Spatio-temporal Epidemiology 2023, 45:100584.
+Tang IW, Bartell SM, Vieira VM. Unmatched Spatially Stratified Controls: A simulation study examining efficiency and precision using spatially-diverse controls and generalized additive models. Spatial and Spatio-temporal Epidemiology 2023, 45:100584. \doi{10.1016/j.sste.2023.100584}
 }
 
 \seealso{

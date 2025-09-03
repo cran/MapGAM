@@ -17,7 +17,7 @@
 # along with this library??? if not, <http://www.gnu.org/licenses/>.
 #
 #*******************************************************************************
-gamcox <- function(formula, data, subset, weights, span=0.5, I.span=0.2, degree=1, 
+gamcox <- function(formula, data, subset, weights = NULL, span=0.5, I.span=0.2, degree=1, 
                    loess.trace="exact", Maxiter=40, tol=1e-7)
   {
     call <- match.call()
@@ -86,7 +86,7 @@ gamcox <- function(formula, data, subset, weights, span=0.5, I.span=0.2, degree=
         X.matrix <- if(!is.empty.model(mt))model.matrix(mt,mf,contrasts)[,-1]
         smooth.frame = mf[[order]]
       }
-    if(!missing(weights)){
+    if(!is.null(weights)){
       if(any(weights<0)) 
         stop("Negative weights not allowed")
       weights = weights[subset]

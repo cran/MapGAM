@@ -17,10 +17,11 @@
 # along with this library??? if not, <http://www.gnu.org/licenses/>.
 #
 #*******************************************************************************
-gamcox.fit <- function(Y, X, smooth.frame, weights, span=0.5, I.span = 0.2, degree=1,
+gamcox.fit <- function(Y, X, smooth.frame, weights=NULL, span=0.5, I.span = 0.2, degree=1,
                        loess.trace="exact", Maxiter=40, tol=1e-7){
   N <- length(Y$time)
-  fit <- coxph(Surv(Y$time,Y$event) ~ X, weights=if(missing(weights))rep(1,N) else weights)
+  if(is.null(weights)) weights <- rep(1,N)
+  fit <- coxph(Surv(Y$time,Y$event) ~ X, weights=weights)
   eta <- fit$linear.predictors
   which = grep("lo\\([[:print:]]+\\)", colnames(X))
   ls <- dls(Y, X, which, eta, I.span, TRUE)

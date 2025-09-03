@@ -19,7 +19,7 @@ Displays a color image map, including a legend, scale bar, and optional North ar
 (required) an object of class \code{modgam}, usually returned by the \code{modgam} function.  
 }
   \item{map}{
-can be used to map predicted values on a base map from the \code{map} function in the \pkg{maps} package, or on a base map produced by the \code{readShapePoly} function in \pkg{maptools} package.  ReadShapePoly reads maps from external files in the ESRI shapefile format.  \code{map=NULL} produces a color image without any base map.
+can be used to map predicted values on a base map from the \code{map} function in the \pkg{maps} package, or on a base map produced from an external shapefile using the \code{st_read} function in \pkg{sf} package. Note that MapGAM used to include examples using the \code{readShapePoly} function in the \pkg{maptools} package, but that package was removed from the CRAN repository in late 2023. \code{map=NULL} produces a color image without any base map.
 }
   \item{exp}{
 if \code{exp=T}, \code{fit} will be displayed in exponential scale.  
