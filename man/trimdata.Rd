@@ -52,30 +52,6 @@ Send bug reports to \email{sbartell@uci.edu}.
 
 \examples{
 	
-# This example uses the "sf" package to read in an external ESRI shapefile for Maine
-if (require(sf)) {
-  # download example shapefile zip from github, and unzip
-  zippath <- paste(tempdir(),"Income_schooling.zip",sep="/")	
-  download.file("https://github.com/mgimond/Spatial/raw/main/Data/Income_schooling.zip", 
-              destfile = zippath, mode='wb')
-  unzip(zippath, exdir = tempdir())
-
-  # read shapefile into sf format 
-  shppath <- paste(tempdir(),"Income_schooling.shp",sep="/")	
-  basemap0 <- st_read(shppath)  
-  
-  # Create example data by randomly sampling within bounding box
-  rs <- st_bbox(basemap0)   # get ranges of X and Y
-  MEdata <- data.frame(X=runif(300,rs[1],rs[3]), Y=runif(300,rs[2],rs[4]))
-  plot(basemap0["NAME"], reset=FALSE)
-  plot(st_as_sf(MEdata,coords=1:2), add=TRUE)  # plot data in black
-  
-  # trim data to basemap, and plot trimmed data with red X's
-  dME <- trimdata(MEdata, basemap0)
-  plot(st_as_sf(dME,coords=1:2), col="red", pch="X", add=TRUE) 
-  dev.off() 	  # clear map settings
-}
-	
 # The following examples use the "maps" package, which includes its own maps
 if (require(maps)) {
   data(beertweets)
@@ -93,5 +69,35 @@ if (require(maps)) {
   # Plot tweet locations (beer tweets in red)
   points(dTX$longitude, dTX$latitude, col=dTX$beer+1, cex=0.5) 
 }
+
+\dontrun{
+# This additional example (not run automatically by the example function) 
+# uses the sf and RCurl packages to read in an external ESRI shapefile for Maine
+shpfileloc <- "https://www2.census.gov/geo/tiger/GENZ2025/shp/cb_2025_23_cousub_500k.zip"
+# if (require(sf) && require(RCurl) && url.exists(shpfileloc)) {
+  # download example shapefile zip from github, and unzip
+  zippath <- paste(tempdir(),"cb_2025_23_cousub_500k.zip",sep="/")	
+  download.file(shpfileloc, 
+              destfile = zippath, mode='wb')
+  unzip(zippath, exdir = tempdir())
+
+  # read shapefile into sf format 
+  shppath <- paste(tempdir(),"cb_2025_23_cousub_500k.shp",sep="/")	
+  basemap0 <- st_read(shppath)  
+  
+  # Create example data by randomly sampling within bounding box
+  rs <- st_bbox(basemap0)   # get ranges of X and Y
+  MEdata <- data.frame(X=runif(300,rs[1],rs[3]), Y=runif(300,rs[2],rs[4]))
+  plot(basemap0["NAME"], reset=FALSE)
+  plot(st_as_sf(MEdata,coords=1:2), add=TRUE)  # plot data in black
+  
+  # trim data to basemap, and plot trimmed data with red X's
+  dME <- trimdata(MEdata, basemap0)
+  plot(st_as_sf(dME,coords=1:2), col="red", pch="X", add=TRUE) 
+  
+  dev.off()  # clear map settings
+#  } 
+}
+
 }
 \keyword{misc}

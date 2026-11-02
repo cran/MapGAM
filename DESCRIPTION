@@ -1,8 +1,8 @@
 Package: MapGAM
 Type: Package
 Title: Mapping Smoothed Effect Estimates from Individual-Level Data
-Version: 1.3-1
-Date: 2025-08-03
+Version: 1.4
+Date: 2026-10-30
 Authors@R: c(person(given = "Lu",
                         family = "Bai",
                         role = "aut"),
@@ -23,12 +23,12 @@ Depends: R (>= 2.10.0), sp, gam, survival
 Imports: sf, colorspace, PBSmapping
 Suggests: maps, mapproj
 NeedsCompilation: no
-Packaged: 2025-08-04 03:42:09 UTC; sbartell
 Author: Lu Bai [aut],
   Scott Bartell [aut, cre] (ORCID:
     <https://orcid.org/0000-0001-7797-2906>),
   Robin Bliss [aut],
   Veronica Vieira [aut]
 Maintainer: Scott Bartell <sbartell@uci.edu>
+Packaged: 2026-10-30 22:14:23 UTC; sbartell
 Repository: CRAN
-Date/Publication: 2025-09-03 09:50:10 UTC
+Date/Publication: 2026-11-02 16:30:02 UTC

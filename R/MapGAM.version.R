@@ -1,5 +1,5 @@
 MapGAM.version = function() cat('
-Aug 03 2025 	MapGAM version 1.3-1
+Oct 30 2026 	MapGAM version 1.4
   	
 Dec 10 2016	AIC.modgam.R
 Dec 10 2016	coef.gamcox.R
@@ -10,7 +10,7 @@ Dec 10 2016	formula.gamcox.R
 Dec 10 2016	formula.modgam.R
 Aug 3 2025	gamcox.fit.R
 Aug 3 2025	gamcox.R
-Aug 3 2025	MapGAM.version.R
+Oct 30 2026	MapGAM.version.R
 Aug 10 2019	modgam.R
 Jul 24 2019	mypredict.gam.R
 Oct 31 2018	optspan.R

@@ -1,8 +1,8 @@
-8ee875c9a07f0e192e5dc7d8ac8da210 *ChangeLog
-0927261fc75777e12a4cc47821c8a3c9 *DESCRIPTION
+0ab007f9387e46a4591ca2cfabdb51f3 *ChangeLog
+d7284399547692bfdace782b1108b518 *DESCRIPTION
 93e9291556ca0db9623dc3c0f906d598 *NAMESPACE
 9b8b73db80de16a79045de94643ff69f *R/AIC.modgam.R
-890c859a7ff5ceba63e0577a0330c8b3 *R/MapGAM.version.R
+f4ecebb7625c0a466de1b8f774582e25 *R/MapGAM.version.R
 7e13153c8ae594307e74a815cd5b2fa1 *R/coef.gamcox.R
 d717b010fce5ea885b1d2998819fb1da *R/coef.modgam.R
 c26af9fe0e9d41ee8f0829f2186a15f7 *R/colormap.R
@@ -26,7 +26,7 @@ b3f582871b17e8006a7ec6794337d1c7 *R/print.modgam.R
 7dd05119ee405dfc4c2e5af44160df19 *R/summary.modgam.R
 7d1becaa5461ffc703b59fb412d8d14c *R/toformula.R
 08783a37a96f1e7b521f4371a0ce2dc0 *R/trimdata.R
-1bf18d9c216b8d95033f0bd2fe2906b2 *build/partial.rdb
+29cf7d47d34a2b0e7ae0e2046f2d132b *build/partial.rdb
 fa614af1963e6fb7ab63a4e3bd3764e9 *data/CAdata.rda
 bcbc66be5236a69a0733d25100f6731e *data/CAgrid.rda
 23145ac44dca74cfb2302271be6cc2b2 *data/CAmap.rda
@@ -64,4 +64,4 @@ e735907e624b4e496b0a02df1a14614b *man/print.modgam.Rd
 ceb017903cfa0e658c06163de0bb4858 *man/summary.gamcox.Rd
 73134ccd13ce15095b2bcc7d20e36cc8 *man/summary.modgam.Rd
 56df7959bbe53d4c6029f80a8cb0d0e6 *man/toformula.Rd
-29715f30adc464f87a1bd32490bb64f9 *man/trimdata.Rd
+b6d2d472bf63bb7239e6306b28c62818 *man/trimdata.Rd
